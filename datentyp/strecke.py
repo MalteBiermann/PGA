@@ -1,6 +1,6 @@
 from copy import deepcopy
 from math import sqrt, atan2, pi
-from json import *
+import json
 
 if __name__ == "__main__":
     import sys
