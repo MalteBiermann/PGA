@@ -5,6 +5,8 @@ if __name__ == "__main__":
     sys.path.append(".")
     
 from operation.winkelrechner import *
+from datentyp.punkt import Punkt
+from datentyp.strecke import Strecke
 
 
 class FensterHA(Frame):
@@ -32,16 +34,16 @@ class FensterHA(Frame):
         Entry(self, textvariable=self.eingabeT).grid(
             row=1, column=3, padx=3, pady=3)
 
-        Label(self, text="Y:").grid(row=1, column=0)
-        Label(self, text="X:").grid(row=2, column=0)
-        Label(self, text="A:").grid(row=0, column=1)
-        Label(self, text="B:").grid(row=0, column=4)
-        Label(self, text="t:").grid(row=0, column=3)
-        Label(self, text="s:").grid(row=0, column=2)
+        Label(self, text="(Rechts) Y:").grid(row=1, column=0)
+        Label(self, text="(Hoch) X:").grid(row=2, column=0)
+        Label(self, text="Punkt A:").grid(row=0, column=1)
+        Label(self, text="Punkt B:").grid(row=0, column=4)
+        Label(self, text="Winkel t / gon:").grid(row=0, column=3)
+        Label(self, text="Strecke s:").grid(row=0, column=2)
 
-        Button(self, text="Berechne 1. GeoGA", command=self.btnBerechneErsteHAPressed).grid(
+        Button(self, text="Berechne 1. Hauptaufgabe", command=self.btnBerechneErsteHAPressed).grid(
             row=3, column=0, padx=3, pady=3)
-        Button(self, text="Berechne 2. GeoGA", command=self.btnBerechneZweiteHAPressed).grid(
+        Button(self, text="Berechne 2. Hauptaufgabe", command=self.btnBerechneZweiteHAPressed).grid(
             row=4, column=0, padx=3, pady=3)
 
         
@@ -54,7 +56,7 @@ class FensterHA(Frame):
         X1 = float(self.eingabeX1.get().replace(",", "."))
         t = gon2rad(float(self.eingabeT.get().replace(",", ".")))
         s = float(self.eingabeS.get().replace(",", "."))
-        X2, Y2 = erstegga(X1, Y1, s, t)
+        X2, Y2 = Punkt.erstegga(X1, Y1, s, t)
         self.eingabeX2.set(X2)
         self.eingabeY2.set(Y2)
 
@@ -64,7 +66,8 @@ class FensterHA(Frame):
         Y2 = float(self.eingabeY2.get().replace(",", "."))
         X2 = float(self.eingabeX2.get().replace(",", "."))
 
-        s, t = zweitegga(Y1, X1, Y2, X2)
+        s = Strecke.init_koor(Y1, X1, Y2, X2)
+        s, t = s.zweitegga()
         t = rad2gon(t)
         self.eingabeS.set(s)
         self.eingabeT.set(t)

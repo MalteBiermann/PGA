@@ -1,5 +1,7 @@
 # PGA Python Programm
-Python Programm für grundlegende Berechnung geodätischer Aufgaben
+Python-Script zur Berechnung grundlegender geodätischer Aufgaben
+
+**Größtenteils nicht lauffähig**
 
 ##  Rahmen
 Jade HS

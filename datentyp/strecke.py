@@ -1,10 +1,11 @@
 from copy import deepcopy
 from math import sqrt, atan2, pi
-import json
+from json import *
 
 if __name__ == "__main__":
     import sys
     sys.path.append(".")
+
 from datentyp.winkel import *
 from datentyp.punkt import *
 

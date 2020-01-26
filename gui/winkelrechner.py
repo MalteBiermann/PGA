@@ -1,4 +1,4 @@
-from tkinter import *
+from tkinter import Frame,Tk,Button,Toplevel,Entry,Label,StringVar
 
 from operation.winkelrechner import *
 
@@ -28,9 +28,6 @@ class FensterWinkelrechner(Frame):
             row=1, column=2, padx=3, pady=3)
         Button(self, text="Berechne", command=self.btnBerechneGonPressed).grid(
             row=2, column=2, padx=3, pady=3)
-
-        Button(self, text="exit", command=master.destroy).grid(
-            row=5, column=0, padx=3, pady=3)
 
         self.focus_set()
         self.grab_set()

@@ -1,6 +1,6 @@
 from tkinter import Frame,Tk,Button,Toplevel
 
-class FensterRS(Frame):
+class FensterBS(Frame):
     def __init__(self, master):
         super().__init__(master)
         pass
@@ -10,3 +10,8 @@ class FensterRS(Frame):
 
 if __name__ == "__main__":
     pass
+    root = Tk()
+    root.title("Bogenschnitt")
+    root.geometry
+    app = FensterBS(root)
+    app.mainloop()
