@@ -10,11 +10,14 @@ Programmieren geodätischer Aufgaben
 
 WiSe 2019/2020
 
+## ToDo
+Jede Menge
+
 ## Autoren
 * **SR**
-* **Malte Biermann**
 * **CA**
 * **HG**
+* **Malte Biermann**
 
 ## Lizenz
  Dieses Projekt steht unter der GNU GPLv3 Lizenz.
