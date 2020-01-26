@@ -7,7 +7,7 @@ if __name__ == "__main__":
 from operation.winkelrechner import *
 
 
-class FensterGeoGA(Frame):
+class FensterHA(Frame):
     def __init__(self, master):
         super().__init__(master)
 
@@ -39,9 +39,9 @@ class FensterGeoGA(Frame):
         Label(self, text="t:").grid(row=0, column=3)
         Label(self, text="s:").grid(row=0, column=2)
 
-        Button(self, text="Berechne 1. GeoGA", command=self.btnBerechneErsteGGAPressed).grid(
+        Button(self, text="Berechne 1. GeoGA", command=self.btnBerechneErsteHAPressed).grid(
             row=3, column=0, padx=3, pady=3)
-        Button(self, text="Berechne 2. GeoGA", command=self.btnBerechneZweiteGGAPressed).grid(
+        Button(self, text="Berechne 2. GeoGA", command=self.btnBerechneZweiteHAPressed).grid(
             row=4, column=0, padx=3, pady=3)
 
         
@@ -49,7 +49,7 @@ class FensterGeoGA(Frame):
         self.grab_set()
         self.wait_window()
 
-    def btnBerechneErsteGGAPressed(self):
+    def btnBerechneErsteHAPressed(self):
         Y1 = float(self.eingabeY1.get().replace(",", "."))
         X1 = float(self.eingabeX1.get().replace(",", "."))
         t = gon2rad(float(self.eingabeT.get().replace(",", ".")))
@@ -58,7 +58,7 @@ class FensterGeoGA(Frame):
         self.eingabeX2.set(X2)
         self.eingabeY2.set(Y2)
 
-    def btnBerechneZweiteGGAPressed(self):
+    def btnBerechneZweiteHAPressed(self):
         Y1 = float(self.eingabeY1.get().replace(",", "."))
         X1 = float(self.eingabeX1.get().replace(",", "."))
         Y2 = float(self.eingabeY2.get().replace(",", "."))
@@ -76,5 +76,5 @@ if __name__ == "__main__":
     root = Tk()
     root.title("Geodätische Hauptaufgaben")
     #root.geometry("350x75")
-    app = FensterGeoGA(root)
+    app = FensterHA(root)
     app.mainloop()

@@ -1,6 +1,6 @@
 from tkinter import *
 
-class FensterRückwärtsschnitt(Frame):
+class FensterVorwärtsschnitt(Frame):
     def __init__(self, master):
         super().__init__(master)
         pass
