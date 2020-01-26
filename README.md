@@ -3,9 +3,13 @@ Python Programm für grundlegende Berechnung geodätischer Aufgaben
 
 ##  Rahmen
 Jade HS
+
 Angewandte Geodäsie
+
 Programmieren geodätischer Aufgaben
+
 WiSe 2019/2020
+
 ## Autoren
 * **SR**
 * **Malte Biermann**
