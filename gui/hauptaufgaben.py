@@ -5,8 +5,8 @@ if __name__ == "__main__":
     sys.path.append(".")
     
 from operation.winkelrechner import *
-from datentyp.punkt import Punkt
-from datentyp.strecke import Strecke
+from datentyp.punkt import *
+from datentyp.strecke import *
 
 
 class FensterHA(Frame):
@@ -54,11 +54,11 @@ class FensterHA(Frame):
     def btnBerechneErsteHAPressed(self):
         Y1 = float(self.eingabeY1.get().replace(",", "."))
         X1 = float(self.eingabeX1.get().replace(",", "."))
-        t = gon2rad(float(self.eingabeT.get().replace(",", ".")))
-        s = float(self.eingabeS.get().replace(",", "."))
-        X2, Y2 = Punkt.erstegga(X1, Y1, s, t)
-        self.eingabeX2.set(X2)
-        self.eingabeY2.set(Y2)
+        t = Winkel(float(self.eingabeT.get().replace(",", ".")),"gon")
+        s = Strecke.init_länge(float(self.eingabeS.get().replace(",", ".")))
+        P2 = Punkt.ersteHA(Punkt(X1, Y1), s, t)
+        self.eingabeX2.set(P2.get_x())
+        self.eingabeY2.set(P2.get_y())
 
     def btnBerechneZweiteHAPressed(self):
         Y1 = float(self.eingabeY1.get().replace(",", "."))
@@ -67,8 +67,8 @@ class FensterHA(Frame):
         X2 = float(self.eingabeX2.get().replace(",", "."))
 
         s = Strecke.init_koor(Y1, X1, Y2, X2)
-        s, t = s.zweitegga()
-        t = rad2gon(t)
+        s, t = s.zweiteHA()
+        t = t.get_w("gon")
         self.eingabeS.set(s)
         self.eingabeT.set(t)
 

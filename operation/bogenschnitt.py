@@ -17,7 +17,7 @@ class Bogenschnitt:
         s1 = self.__k1.get_r()
         s2 = self.__k2.get_r()
 
-        s, t12 = Strecke(self.__k1.get_mp(), self.__k2.get_mp()).zweitegga()
+        s, t12 = Strecke(self.__k1.get_mp(), self.__k2.get_mp()).zweiteHA()
         w_a = acos((s1**2 + s**2 - s2**2) / (2 * s * s1))
         
         t1n_a = t12.get_w() + w_a

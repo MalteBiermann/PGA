@@ -5,18 +5,10 @@ if __name__ == "__main__":
     import sys
     sys.path.append(".")
 
-from datentyp.strecke import *
-from datentyp.winkel import *
+# from datentyp.strecke import Strecke
+# from datentyp.winkel import Winkel
 
 class Punkt:
-    @classmethod
-    def klassenmethode(cls):
-        pass
-
-    @staticmethod
-    def staticmethod():
-        pass
-
     def __init__(self, p_y=0, p_x=0):
         self.__y = deepcopy(p_y)
         self.__x = deepcopy(p_x)
@@ -45,19 +37,24 @@ class Punkt:
         return str(self.get_y()) + "|" + str(self.get_x())
 
 
-    def erstegga(self, p12_s, p12_t):
+    def ersteHA(self, p12_s, p12_t):
         y2 = self.__y + (p12_s.länge() * sin(p12_t.get_w()))
         x2 = self.__x + (p12_s.länge() * cos(p12_t.get_w()))
         return Punkt(y2, x2)
 
 
 if __name__ == "__main__":
-    p0 = Punkt(1, 0)
+    from datentyp.winkel import Winkel
+    from datentyp.strecke import Strecke
+    import operation.hauptaufgaben
 
-    t = Winkel(pi/2, "rad")
+    p1 = Punkt(1, 1)
+    p12_t = Winkel(100, "gon")
     s = 1
 
-    p1_s = Strecke.init_länge(s)
-    res_p1 = p0.erstegga(p1_s, t)
-    print("P0:", p0, "Strecke:", s, "Winkel:", t, "P1:", res_p1)
+    p12_s = Strecke.init_länge(s)
+    result_p2 = operation.hauptaufgaben.erste(p1, p12_s, p12_t)
+    # result_p1 = p0.ersteHA(p1_s, t)
+    print("P1:", p1, "Strecke:", s, "Winkel:", p12_t, "P1:", result_p2)
+
 

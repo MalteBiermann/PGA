@@ -10,8 +10,14 @@ class Winkel:
         else:
             self.__w = w
 
-    def get_w(self):
-        return self.__w
+    def get_w(self, einheit="rad"):
+        if einheit == "gon":
+            wresult = self.rad2gon(self.__w)
+        elif einheit == "grad":
+            wresult = self.rad2grad(self.__w)
+        else:
+            wresult = self.__w
+        return wresult
 
     def set_w(self, w):
         self.__w = w
@@ -41,3 +47,4 @@ class Winkel:
 if __name__ == "__main__":
     w0 = Winkel(90, "grad")
     print("W", w0.get_w())
+    print(w0.get_w("gon"))

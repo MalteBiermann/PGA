@@ -29,7 +29,7 @@ class Rückwärtsschnitt:
         D_y = B_y + (B_x - M_x) * (1/cos(self.__wBeta.get_w()))
         D_x = B_x - (B_y - M_y) * (1/cos(self.__wBeta.get_w()))
 
-        s, CD_w = Strecke(Punkt(C_y,C_x),Punkt(D_y,D_x)).zweitegga()
+        s, CD_w = Strecke(Punkt(C_y,C_x),Punkt(D_y,D_x)).zweiteHA()
 
         N_x = C_x + (M_y - C_y + (M_x - C_x) * (1/cos(CD_w.get_w())))
         N_y = C_y + (N_x - C_x) * tan(CD_w.get_w())
