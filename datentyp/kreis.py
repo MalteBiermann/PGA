@@ -23,7 +23,7 @@ class Kreis:
         self.__r = r
 
     def __str__(self):
-        return "Kreis MP: " + str(self.__mp) + "Radius: " + str(self.__r)
+        return "Kreis MP: " + str(self.__mp) + " Radius: " + str(self.__r)
 
 
 if __name__ == "__main__":

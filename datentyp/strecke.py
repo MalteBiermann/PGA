@@ -38,16 +38,17 @@ class Strecke:
         p1 = Punkt(p1_y, p1_x)
         return cls(p0, p1, True, True)
 
-    def länge(self):
+    def subtrahiere(self):
         dy = self.p1.get_y() - self.p0.get_y()
         dx = self.p1.get_x() - self.p0.get_x()
+        return dy,dx
+
+    def länge(self):
+        dy,dx = self.subtrahiere()
         return sqrt((dy ** 2 + dx ** 2))
 
-#    def subtrahiere(self, p1):
-
     def zweiteHA(self):
-        dy = self.p1.get_y() - self.p0.get_y()
-        dx = self.p1.get_x() - self.p0.get_x()
+        dy,dx = self.subtrahiere()
         t = atan2(dy, dx)
         if t < 0:
             t = 2*pi + t
@@ -72,15 +73,11 @@ class Strecke:
 
 
 if __name__ == "__main__":
-    import operation.hauptaufgaben
 
     p0 = Punkt(0, 0)
     p1 = Punkt(0, 2)
 
     s = Strecke(p0, p1)
-
-    d, t = operation.hauptaufgaben.zweite(p0,p1)
-    print(s, d, t)
     d, t = s.zweiteHA()
     print(s, d, t)
 

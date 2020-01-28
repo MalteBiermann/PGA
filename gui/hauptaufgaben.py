@@ -1,12 +1,12 @@
-from tkinter import *
+from tkinter import Tk, Entry, StringVar, Frame, Label, Button
 
 if __name__ == "__main__":
     import sys
     sys.path.append(".")
     
-from operation.winkelrechner import *
-from datentyp.punkt import *
-from datentyp.strecke import *
+from datentyp.punkt import Punkt
+from datentyp.strecke import Strecke
+from datentyp.winkel import Winkel
 
 
 class FensterHA(Frame):
@@ -65,7 +65,6 @@ class FensterHA(Frame):
         X1 = float(self.eingabeX1.get().replace(",", "."))
         Y2 = float(self.eingabeY2.get().replace(",", "."))
         X2 = float(self.eingabeX2.get().replace(",", "."))
-
         s = Strecke.init_koor(Y1, X1, Y2, X2)
         s, t = s.zweiteHA()
         t = t.get_w("gon")

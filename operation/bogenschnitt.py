@@ -4,9 +4,9 @@ if __name__ == "__main__":
     import sys
     sys.path.append(".")
 
-from datentyp.kreis import *
-from datentyp.punkt import *
-from datentyp.strecke import *
+from datentyp.kreis import Kreis
+from datentyp.punkt import Punkt
+from datentyp.strecke import Strecke
 
 class Bogenschnitt:
     def __init__(self, k1, k2):
@@ -32,8 +32,11 @@ class Bogenschnitt:
 if __name__ == "__main__":
     p1 = Punkt(328.76, 1207.85)
     p2 = Punkt(925.04, 954.33)
+    # s1 = Strecke.init_länge2(p1, 294.33)
+    # s2 = Strecke.init_länge2(p2, 506.42)
+
     k1 = Kreis(p1, 294.33)
     k2 = Kreis(p2, 506.42)
 
     p_res1,p_res2 = Bogenschnitt(k1, k2).berechne()
-    print(p_res1,"  " ,p_res2)
+    print(p_res1, "\n" ,p_res2)

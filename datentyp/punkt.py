@@ -1,5 +1,6 @@
 from math import pi, sin, cos
 from copy import deepcopy
+import json
 
 if __name__ == "__main__":
     import sys
@@ -9,9 +10,10 @@ if __name__ == "__main__":
 # from datentyp.winkel import Winkel
 
 class Punkt:
-    def __init__(self, p_y=0, p_x=0):
+    def __init__(self, p_y=0, p_x=0, id=""):
         self.__y = deepcopy(p_y)
         self.__x = deepcopy(p_x)
+        self.__id = deepcopy(id)
 
     def get_x(self):
         return self.__x
@@ -19,11 +21,17 @@ class Punkt:
     def get_y(self):
         return self.__y
 
+    def get_id(self):
+        return self.__id
+
     def set_x(self, x):
         self.__x = x
 
     def set_y(self, y):
         self.__y = y
+    
+    def set_id(self, id):
+        self.__id = id
 
     def get_json(self):
         return self.__dict__
@@ -36,7 +44,6 @@ class Punkt:
     def __str__(self):
         return str(self.get_y()) + "|" + str(self.get_x())
 
-
     def ersteHA(self, p12_s, p12_t):
         y2 = self.__y + (p12_s.länge() * sin(p12_t.get_w()))
         x2 = self.__x + (p12_s.länge() * cos(p12_t.get_w()))
@@ -46,15 +53,14 @@ class Punkt:
 if __name__ == "__main__":
     from datentyp.winkel import Winkel
     from datentyp.strecke import Strecke
-    import operation.hauptaufgaben
 
-    p1 = Punkt(1, 1)
+    p1 = Punkt(1, 1,"Test")
     p12_t = Winkel(100, "gon")
     s = 1
-
     p12_s = Strecke.init_länge(s)
-    result_p2 = operation.hauptaufgaben.erste(p1, p12_s, p12_t)
-    # result_p1 = p0.ersteHA(p1_s, t)
+    result_p2 = p1.ersteHA(p12_s, p12_t)
     print("P1:", p1, "Strecke:", s, "Winkel:", p12_t, "P1:", result_p2)
+
+    print(json.dumps(p1, default=lambda objekt: objekt.get_json(),sort_keys=True, indent=4))
 
 
