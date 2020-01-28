@@ -53,12 +53,21 @@ class FensterBS(Frame):
 
 
     def btnBerechnePressed(self):
-        pass
-        p1 = Punkt()
-        p2 = Punkt()
-        k1 = Kreis()
-        k2 = Kreis()
+        Y1 = float(self.eingabeY1.get().replace(",", "."))
+        X1 = float(self.eingabeX1.get().replace(",", "."))
+        Y2 = float(self.eingabeY2.get().replace(",", "."))
+        X2 = float(self.eingabeX2.get().replace(",", "."))
+        S1 = float(self.eingabeS1.get().replace(",", "."))
+        S2 = float(self.eingabeS2.get().replace(",", "."))
+        p1 = Punkt(Y1,X1)
+        p2 = Punkt(Y2,X2)
+        k1 = Kreis(p1,S1)
+        k2 = Kreis(p2,S2)
         p3, p4 = Bogenschnitt(k1, k2).berechne()
+        self.ausgabeY1.set(str(p3.get_y()))
+        self.ausgabeX1.set(str(p3.get_x()))
+        self.ausgabeY2.set(str(p4.get_y()))
+        self.ausgabeX2.set(str(p4.get_x()))
 
 
 
