@@ -15,21 +15,21 @@ class Punkt:
         self.__x = deepcopy(p_x)
         self.__id = deepcopy(id)
 
-    def get_x(self):
-        return self.__x
-
     def get_y(self):
         return self.__y
+
+    def get_x(self):
+        return self.__x
 
     def get_id(self):
         return self.__id
 
+    def set_y(self, y):
+        self.__y = y
+
     def set_x(self, x):
         self.__x = x
 
-    def set_y(self, y):
-        self.__y = y
-    
     def set_id(self, id):
         self.__id = id
 
