@@ -1,5 +1,9 @@
 from tkinter import Frame,Tk,Button,Toplevel,Entry,Label,StringVar
 
+if __name__ == "__main__":
+    import sys
+    sys.path.append(".")
+
 from operation.winkelrechner import *
 
 class FensterWinkelrechner(Frame):
