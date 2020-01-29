@@ -1,7 +1,21 @@
-# Programmieren geodätischer Aufgaben Python/Tkinter Script
-Python-Script zur Berechnung grundlegender geodätischer Aufgaben
+# Programmieren geodätischer Aufgaben Python/Tkinter Skript
+Python-Skript zur Berechnung grundlegender geodätischer Aufgaben
 
 **Under development / Alpha status**
+
+## Features
+  * Winkelumrechnung
+  * Erste/Zweite geodätische Hauptaufgabe
+  * Punktbestimmung durch
+    * Rückwärtsschnitt
+    * Vorwärtsschnitt
+    * Bogenschnitt
+    * Polygonzug
+      * Beidseitig angeschlossen Richtung/Lage
+      * Ring
+    * Transformation
+      * Helmert 2D
+      * Affin 2D
 
 ##  Rahmen
 Jade HS
