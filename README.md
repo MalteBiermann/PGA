@@ -1,7 +1,7 @@
-# PGA Python Programm
+# Programmieren geodätischer Aufgaben Python/Tkinter Script
 Python-Script zur Berechnung grundlegender geodätischer Aufgaben
 
-**Größtenteils nicht lauffähig**
+**Under development / Alpha status**
 
 ##  Rahmen
 Jade HS
