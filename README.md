@@ -13,9 +13,9 @@ Python-Skript zur Berechnung grundlegender geodätischer Aufgaben
     * Polygonzug
       * Beidseitig angeschlossen Richtung/Lage
       * Ring
-    * Transformation
-      * Helmert 2D
-      * Affin 2D
+  * Transformation
+    * Helmert 2D
+    * Affin 2D
 
 ##  Rahmen
 Jade HS
