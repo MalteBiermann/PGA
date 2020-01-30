@@ -26,31 +26,31 @@ class FensterWinkelrechner(Frame):
         Entry(self, textvariable=self.eingabe3).grid(
             row=2, column=1, padx=3, pady=3)
 
-        Button(self, text="Berechne", command=self.btnBerechneGradPressed).grid(
+        Button(self, text="Berechne", command=self.btnPressedBerechneGrad).grid(
             row=0, column=2, padx=3, pady=3)
-        Button(self, text="Berechne", command=self.btnBerechneRadPressed).grid(
+        Button(self, text="Berechne", command=self.btnPressedBerechneRad).grid(
             row=1, column=2, padx=3, pady=3)
-        Button(self, text="Berechne", command=self.btnBerechneGonPressed).grid(
+        Button(self, text="Berechne", command=self.btnPressedBerechneGon).grid(
             row=2, column=2, padx=3, pady=3)
 
         self.focus_set()
         self.grab_set()
         self.wait_window()
 
-    def btnBerechneGradPressed(self):
+    def btnPressedBerechneGrad(self):
         #m = "rad={:5.3f}".format(grad2rad(float(self.eingabe1.get())))
         gon = grad2gon(float(self.eingabe1.get().replace(",", ".")))
         rad = grad2rad(float(self.eingabe1.get().replace(",", ".")))
         self.eingabe2.set(rad)
         self.eingabe3.set(gon)
 
-    def btnBerechneRadPressed(self):
+    def btnPressedBerechneRad(self):
         gon = rad2gon(float(self.eingabe2.get().replace(",", ".")))
         grad = rad2grad(float(self.eingabe2.get().replace(",", ".")))
         self.eingabe3.set(gon)
         self.eingabe1.set(grad)
 
-    def btnBerechneGonPressed(self):
+    def btnPressedBerechneGon(self):
         grad = gon2grad(float(self.eingabe3.get().replace(",", ".")))
         rad = gon2rad(float(self.eingabe3.get().replace(",", ".")))
         self.eingabe2.set(rad)
