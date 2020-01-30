@@ -114,10 +114,10 @@ class Punkt_Dic:
                 pass
             
 
-    def einlesenDatei(self, datei):
+    def einlesenDatei(self, datei,decSep=".",valSep=";"):
         with open(datei) as fh:
-            lines = fh.readlines()
-            self.einlesenListe(lines)
+            lines = fh.read()
+            self.einlesenListe(lines,decSep,valSep)
 
 
 
@@ -143,26 +143,17 @@ if __name__ == "__main__":
 105;39749.540;23189.310
 106;36861.190;22997.880"""
 
-#     str_pl1 = """1 32504989.727 5895259.877
-# 2 32505415.520 5895362.202
-# 3 32505468.158 5895140.821
-# 4 32505733.235 5895238.530"""
 
-#     str_pl0 = """1 56.054 263.191
-# 2 237.438 387.810
-# 3 302.635 294.019
-# 4 409.606 387.495
-# 5 481.762 378.895"""
-
-    dict_Punktliste1 = Punkt_Dic()
-    dict_Punktliste1.einlesenListe(str_pl0,".",";")
-
-    dict_Punktliste2 = Punkt_Dic()
-    dict_Punktliste2.einlesenListe(str_pl1,".",";")
+    dict_PLQuelle = Punkt_Dic()
+    dict_PLZiel = Punkt_Dic()
+#    dict_PLQuelle.einlesenListe(str_pl0,".",";")
+#    dict_PLZiel.einlesenListe(str_pl1,".",";")
+    dict_PLQuelle.einlesenDatei("testdata/helmert1.csv", decSep=".", valSep=";")
+    dict_PLZiel.einlesenDatei("testdata/helmert2.csv", decSep=".", valSep=";")
 
     # dic_p0.einlesen_datei(str_pl0)
     # dic_p1.einlesen_datei(str_pl1)
-    ht = HelmertTrans(dict_Punktliste1, dict_Punktliste2)
+    ht = HelmertTrans(dict_PLQuelle, dict_PLZiel)
 
     d = ht.get_result().get_dic()
     for k,v in d.items():
