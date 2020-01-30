@@ -1,14 +1,21 @@
 from tkinter import Frame,Tk,Button,Toplevel,LabelFrame,Label,Entry,StringVar
 from tkinter.ttk import Treeview
 
+if __name__ == "__main__":
+    import sys
+    sys.path.append(".")
+
+from operation.helmerttransformation import HelmertTrans, Punkt_Dic
+
 class FensterTrans(Frame):
     def __init__(self, master):
         super().__init__(master)
 
         
-        self.eingabe1 = StringVar()
-        self.eingabe2 = StringVar()
-        self.eingabe3 = StringVar()
+        self.filePathSource = StringVar()
+        self.filePathDest = StringVar()
+        #self.eingabe2 = StringVar()
+        #self.eingabe3 = StringVar()
         self.grid()
 
         lfSource = LabelFrame(root, text="Quellsystem")
@@ -16,8 +23,12 @@ class FensterTrans(Frame):
         lfDest = LabelFrame(root, text="Zielsystem")
         lfDest.grid(row=0, column=1, padx=3, pady=3)
 
+
+        Entry(lfSource, textvariable=self.filePathSource,width=75).grid(row=0, column=0, padx=3, pady=3,sticky="w")
+        #Button(self, text="Berechne", command=self.btnBerechnePressed).grid(row=4, column=3, padx=3, pady=3)
+
         punktListSource = Treeview(lfSource)
-        punktListSource.grid(row=0, column=0, padx=3, pady=3)
+        punktListSource.grid(row=1, column=0, padx=3, pady=3)
         punktListSource["columns"] = ("y", "x", "status")
         punktListSource.column("#0",width = 100, minwidth=100)
         punktListSource.column("status",width = 50, minwidth=50)
@@ -26,8 +37,10 @@ class FensterTrans(Frame):
         punktListSource.heading("x",text="x")
         punktListSource.heading("status",text="aktiv")
 
+
+        Entry(lfDest, textvariable=self.filePathDest,width=75).grid(row=0, column=0, padx=3, pady=3,sticky="w")
         punktListDest = Treeview(lfDest)
-        punktListDest.grid(row=0, column=0, padx=3, pady=3)
+        punktListDest.grid(row=1, column=0, padx=3, pady=3)
         punktListDest["columns"] = ("y", "x", "status")
         punktListDest.column("#0",width = 100, minwidth=100)
         punktListDest.column("status",width = 50, minwidth=50)
@@ -49,6 +62,8 @@ class FensterTrans(Frame):
         # self.focus_set()
         # self.grab_set()
         # self.wait_window()
+
+
 
 if __name__ == "__main__":
 
