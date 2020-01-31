@@ -1,12 +1,12 @@
-from math import tan
+from math import tan,cos
 
 if __name__ == "__main__":
     import sys
     sys.path.append(".")
 
-from datentyp.winkel import *
-from datentyp.punkt import *
-from datentyp.strecke import *
+from datentyp.winkel import Winkel
+from datentyp.punkt import Punkt
+from datentyp.strecke import Strecke
 
 class Rückwärtsschnitt:
     def __init__(self, pA, pB, pM, wAlpha, wBeta):
