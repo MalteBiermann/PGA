@@ -114,12 +114,12 @@ class Punkt_Dic:
             if sepDec != ".":
                 l = l.replace(sepDec,".")
             try:
-                nr, y, x = l.split(sepVal)
-                p = Punkt(float(y), float(x), nr)
-                self.__Pdic.update({nr: p})
+                id, y, x = l.split(sepVal)
+                p = Punkt(float(y), float(x), id)
+                self.__Pdic.update({id: p})
             except:
                 pass
-            
+
 
     def einlesenDatei(self, datei,decSep=".",valSep=";"):
         with open(datei) as fh:
