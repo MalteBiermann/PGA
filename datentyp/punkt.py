@@ -50,6 +50,35 @@ class Punkt:
         return Punkt(y2, x2)
 
 
+
+class Punkt_Dic:
+    def __init__(self):
+        self.__Pdic = {}
+
+    def get_dic(self):
+        return self.__Pdic
+
+    def set_dic(self,d):
+        self.__Pdic = d
+
+    def einlesenListe(self, liste, sepDec=".",sepVal=";"):
+        for l in liste.splitlines():
+            if sepDec != ".":
+                l = l.replace(sepDec,".")
+            try:
+                id, y, x = l.split(sepVal)
+                p = Punkt(float(y), float(x), id)
+                self.__Pdic.update({id: p})
+            except:
+                pass
+
+    def einlesenDatei(self, datei,decSep=".",valSep=";"):
+        with open(datei) as fh:
+            lines = fh.read()
+            self.einlesenListe(lines,decSep,valSep)
+
+
+
 if __name__ == "__main__":
     from datentyp.winkel import Winkel
     from datentyp.strecke import Strecke
