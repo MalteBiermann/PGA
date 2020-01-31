@@ -9,15 +9,19 @@ from datentyp.strecke import Strecke
 
 
 class HelmertTrans:
-    def __init__(self, d_p0, d_p1):
-        PDic0 = d_p0.get_dic()
-        PDic1 = d_p1.get_dic()        
-        self.__PDic2 = Punkt_Dic()
-        #self.__maßstab = 1
+    def __init__(self, d_p0, d_p1, l_p1exclude=None):
+        dicP0 = d_p0.get_dic()
+        dicP1 = d_p1.get_dic()        
+        self.__dicP2 = Punkt_Dic()
+        self.__tParameter = {}
+
+        if l_p1exclude is not None:
+            for e in l_p1exclude:
+                dicP1.pop(e, None)
 
         l_p_ident = []
-        for k in PDic0.keys():
-            if k in PDic1.keys():
+        for k in dicP0.keys():
+            if k in dicP1.keys():
                 l_p_ident.append(k)
 
         y_cog = 0
@@ -25,10 +29,10 @@ class HelmertTrans:
         Y_cog = 0
         X_cog = 0
         for k in l_p_ident:
-            y_cog += PDic0[k].get_y()
-            x_cog += PDic0[k].get_x()
-            Y_cog += PDic1[k].get_y()
-            X_cog += PDic1[k].get_x()
+            y_cog += dicP0[k].get_y()
+            x_cog += dicP0[k].get_x()
+            Y_cog += dicP1[k].get_y()
+            X_cog += dicP1[k].get_x()
 
         i = len(l_p_ident)
         y_cog = y_cog / i
@@ -39,12 +43,12 @@ class HelmertTrans:
         PDic0_reduced = {}
         PDic1_reduced = {}
         for k in l_p_ident:
-            y_red = PDic0[k].get_y() - y_cog
-            x_red = PDic0[k].get_x() - x_cog
+            y_red = dicP0[k].get_y() - y_cog
+            x_red = dicP0[k].get_x() - x_cog
             PDic0_reduced.update({k: Punkt(y_red, x_red)})
 
-            Y_red = PDic1[k].get_y() - Y_cog
-            X_red = PDic1[k].get_x() - X_cog
+            Y_red = dicP1[k].get_y() - Y_cog
+            X_red = dicP1[k].get_x() - X_cog
             PDic1_reduced.update({k: Punkt(Y_red, X_red)})
 
         o_nenner = 0
@@ -62,34 +66,37 @@ class HelmertTrans:
 
         a = a_zähler / a_nenner
         o = o_zähler / o_nenner
-        self.__maßstab = sqrt(a ** 2 + o ** 2)
-        self.__epsilon = atan(o / a)
-        self.__Y0 = Y_cog - a * y_cog - o * x_cog
-        self.__X0 = X_cog - a * x_cog + o * y_cog
+        maßstab = sqrt(a ** 2 + o ** 2)
+        epsilon = atan(o / a)
+        Y0 = Y_cog - a * y_cog - o * x_cog
+        X0 = X_cog - a * x_cog + o * y_cog
         
-        DicPTrans = {}
-        for k,v in PDic0.items():
+        self.__tParameter.update({"m":maßstab})
+        self.__tParameter.update({"epsilon":epsilon})
+        self.__tParameter.update({"Y0":Y0})
+        self.__tParameter.update({"X0":X0})
+
+
+        dicPTrans = {}
+        for k,v in dicP0.items():
             y = v.get_y()
             x = v.get_x()
             id = v.get_id()
-            Y = self.__Y0 + a * y + o * x
-            X = self.__X0 + a * x - o * y
-            pTransformiert = Punkt(Y,X,id)
-            DicPTrans.update({id:pTransformiert})
-        self.__PDic2.set_dic(DicPTrans)
-
-        self.__restklaffen = {}
-        for k in l_p_ident:
-            wy = - self.__Y0 - a*PDic0[k].get_y() - o*PDic0[k].get_x() + PDic1[k].get_y()
-            wx = - self.__X0 - a*PDic0[k].get_x() + o*PDic0[k].get_y() + PDic1[k].get_x()
-            w = {"y":Strecke.init_länge(wy), "x":Strecke.init_länge(wx)}
-            self.__restklaffen.update({k: w})
-            
+            Y = Y0 + a * y + o * x
+            X = X0 + a * x - o * y
+            pTransformiert = {"Punkt":Punkt(Y,X,id)}
+            dicPTrans.update({id:pTransformiert})            
+            if k in l_p_ident:
+                wy = - Y0 - a*dicP0[k].get_y() - o*dicP0[k].get_x() + dicP1[k].get_y()
+                wx = - X0 - a*dicP0[k].get_x() + o*dicP0[k].get_y() + dicP1[k].get_x()
+                w = {"y":Strecke.init_länge(wy), "x":Strecke.init_länge(wx)}
+                dicPTrans[k].update({"w":w})
         
+        self.__dicP2.set_dic(dicPTrans)
 
 
     def get_result(self):
-        return self.__PDic2
+        return (self.__dicP2, self.__tParameter)
 
 
 class Punkt_Dic:
@@ -102,12 +109,12 @@ class Punkt_Dic:
     def set_dic(self,d):
         self.__Pdic = d
 
-    def einlesenListe(self, liste, decSep=".",valSep=";"):
+    def einlesenListe(self, liste, sepDec=".",sepVal=";"):
         for l in liste.splitlines():
-            if decSep != ".":
-                l = l.replace(decSep,".")
+            if sepDec != ".":
+                l = l.replace(sepDec,".")
             try:
-                nr, y, x = l.split(valSep)
+                nr, y, x = l.split(sepVal)
                 p = Punkt(float(y), float(x), nr)
                 self.__Pdic.update({nr: p})
             except:
@@ -122,6 +129,8 @@ class Punkt_Dic:
 
 
 if __name__ == "__main__":
+    dict_PLQuelle = Punkt_Dic()
+    dict_PLZiel = Punkt_Dic()
 
     str_pl0 = """101;-916.300;6078.720
 102;3331.420;6492.430
@@ -142,19 +151,19 @@ if __name__ == "__main__":
 104;42717.270;21412.310
 105;39749.540;23189.310
 106;36861.190;22997.880"""
-
-
-    dict_PLQuelle = Punkt_Dic()
-    dict_PLZiel = Punkt_Dic()
 #    dict_PLQuelle.einlesenListe(str_pl0,".",";")
 #    dict_PLZiel.einlesenListe(str_pl1,".",";")
+
     dict_PLQuelle.einlesenDatei("testdata/helmert1.csv", decSep=".", valSep=";")
     dict_PLZiel.einlesenDatei("testdata/helmert2.csv", decSep=".", valSep=";")
 
-    # dic_p0.einlesen_datei(str_pl0)
-    # dic_p1.einlesen_datei(str_pl1)
     ht = HelmertTrans(dict_PLQuelle, dict_PLZiel)
 
-    d = ht.get_result().get_dic()
-    for k,v in d.items():
-        print(k,v)
+    punkte,parameter = ht.get_result()
+    punkte = punkte.get_dic()
+    for k,v in punkte.items():
+        if "w" in v.keys():
+            print(k,v["Punkt"], "RK:", v["w"]["y"].länge(), v["w"]["x"].länge())
+        else:
+            print(k,v["Punkt"])
+    print(parameter)
