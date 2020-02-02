@@ -68,7 +68,7 @@ class Punkt_Dic:
             try:
                 id, y, x = l.split(sepVal)
                 p = Punkt(float(y), float(x), id)
-                self.__Pdic.update({id: p})
+                self.__Pdic.update({id: {"coord":p}})
             except:
                 pass
 
