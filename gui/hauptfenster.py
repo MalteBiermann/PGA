@@ -8,15 +8,16 @@ import gui.winkelrechner
 import gui.rückwärtsschnitt
 import gui.vorwärtsschnitt
 import gui.hauptaufgaben
+import gui.bogenschnitt
+import gui.transformation
 
 class HauptFenster(Frame):
     def __init__(self, master):
         super().__init__(master)
 
-        self.root = master
-
+#        self.root = master
         self.grid()
-        #Label(self, text="Geodätisches Gedöhns").grid(row=0, column=0)
+
 
         Button(self, text="Winkelrechner", command=self.openFensterWinkelrechner).grid(
             row=1, column=0, padx=3, pady=3)
