@@ -1,4 +1,5 @@
 from math import sqrt, atan
+from copy import deepcopy
 
 if __name__ == "__main__":
     import sys
@@ -10,11 +11,16 @@ from datentyp.strecke import Strecke
 class Transformation:
     def __init__(self, d_p0, d_p1, l_p1exclude=None):
         self._dicP0 = d_p0.get_dic()
-        self._dicP1 = d_p1.get_dic()        
+        self._dicP1 = d_p1.get_dic()
+        
+        self.__dicP1_complete = deepcopy(self._dicP1)
+
         self._dicP2 = Punkt_Dic()
+        
         self._tParameter = {}
 
         if l_p1exclude is not None:
+            self._dicP1 =  self.__dicP1_complete
             for e in l_p1exclude:
                 self._dicP1.pop(e, None)
 
