@@ -1,4 +1,4 @@
-from tkinter import Frame,Tk,Button,Toplevel,LabelFrame,Label,Entry,StringVar,Radiobutton,IntVar,DoubleVar,END
+from tkinter import Frame,Tk,Button,Toplevel,LabelFrame,Label,Entry,StringVar,Radiobutton,IntVar,DoubleVar,END,Scrollbar
 from tkinter.ttk import Treeview
 
 if __name__ == "__main__":
@@ -6,8 +6,10 @@ if __name__ == "__main__":
     sys.path.append(".")
 
 from operation.helmerttransformation import HelmertTrans
+from operation.affintransformation import AffinTrans
 from datentyp.punkt import Punkt_Dic
 from gui.load_pointList import Fenster_loadPList
+from copy import deepcopy
 
 class FensterTrans(Frame):
     def __init__(self, master, controller):
@@ -21,10 +23,12 @@ class FensterTrans(Frame):
         self.filePathSource = StringVar()
         self.filePathDest = StringVar()
 
-        self.dblParaM = DoubleVar()
-        self.dblParaRot = DoubleVar()
-        self.dblParaTransY = DoubleVar()
-        self.dblParaTransX = DoubleVar()
+        self.dblParaM_Y = DoubleVar()
+        self.dblParaM_X = DoubleVar()
+        self.dblParaRot_Y = DoubleVar()
+        self.dblParaRot_X = DoubleVar()
+        self.dblParaTrans_Y = DoubleVar()
+        self.dblParaTrans_X = DoubleVar()
 
         self.radioTrans = IntVar(root,value=0)
 
@@ -34,7 +38,7 @@ class FensterTrans(Frame):
         lfTransType.grid(row=0, column=0, padx=3, pady=3, sticky="w")
         lfSource = LabelFrame(root, text="Quellsystem")
         lfSource.grid(row=1, column=0, padx=3, pady=3, sticky="w", columnspan=2)
-        lfDest = LabelFrame(root, text="Zielsystem")
+        lfDest = LabelFrame(root, text="Zielsystem (Markierung = Nichtbeachtung des Passpunktes)")
         lfDest.grid(row=1, column=2, padx=3, pady=3, sticky="w", columnspan=2)
         lfParameter = LabelFrame(root, text="Parameter")
         lfParameter.grid(row=2, column=2, padx=3, pady=3, sticky="e", columnspan=2)
@@ -46,13 +50,16 @@ class FensterTrans(Frame):
 
         Button(root,text="Lade Punkte",command=self.BtnPressedLoadPoints).grid(row=0, column=1, padx=3, pady=3, sticky="w")
 
-        self.punktListSource = Treeview(lfSource)
+        self.punktListSource = Treeview(lfSource,selectmode="none")
         self.punktListSource.grid(row=0, column=0, padx=3, pady=3)
         self.punktListSource["columns"] = ("y", "x")
         self.punktListSource.column("#0",width = 40, minwidth=40)
         self.punktListSource.heading("#0",text="id")
         self.punktListSource.heading("y",text="y")
         self.punktListSource.heading("x",text="x")
+        self.punktListSourceScroll = Scrollbar(lfSource,orient="vertical", command=self.punktListSource.yview)
+        self.punktListSourceScroll.grid(row=0, column=1, sticky="nse")
+        self.punktListSource.configure(yscrollcommand=self.punktListSourceScroll.set)
 
         self.punktListDest = Treeview(lfDest)
         self.punktListDest.grid(row=0, column=0, padx=3, pady=3)
@@ -61,20 +68,27 @@ class FensterTrans(Frame):
         self.punktListDest.heading("#0",text="id")
         self.punktListDest.heading("y",text="y")
         self.punktListDest.heading("x",text="x")
+        self.punktListDestScroll = Scrollbar(lfDest,orient="vertical", command=self.punktListDest.yview)
+        self.punktListDestScroll.grid(row=0, column=1, sticky="nse")
+        self.punktListDest.configure(yscrollcommand=self.punktListDestScroll.set)
 
         Button(root,text="Berechnen",command=self.BtnPressedCalc).grid(row=2, column=1, padx=3, pady=3, columnspan=1)
 
-        Label(lfParameter,text="Maßstab").grid(row=0, column=0, padx=3, pady=3,)
-        Label(lfParameter,text="Rotation").grid(row=1, column=0, padx=3, pady=3,)
-        Label(lfParameter,text="Translation Y").grid(row=2, column=0, padx=3, pady=3,)
-        Label(lfParameter,text="Translation X").grid(row=3, column=0, padx=3, pady=3,)
+        Label(lfParameter,text="Maßstab Y").grid(row=0, column=0, padx=3, pady=3,)
+        Label(lfParameter,text="Maßstab X").grid(row=1, column=0, padx=3, pady=3,)
+        Label(lfParameter,text="Rotation Y").grid(row=2, column=0, padx=3, pady=3,)
+        Label(lfParameter,text="Rotation X").grid(row=3, column=0, padx=3, pady=3,)
+        Label(lfParameter,text="Translation Y").grid(row=4, column=0, padx=3, pady=3,)
+        Label(lfParameter,text="Translation X").grid(row=5, column=0, padx=3, pady=3,)
 
-        Entry(lfParameter,textvariable=self.dblParaM,state="readonly").grid(row=0, column=1, padx=3, pady=3,)
-        Entry(lfParameter,textvariable=self.dblParaRot,state="readonly").grid(row=1, column=1, padx=3, pady=3,)
-        Entry(lfParameter,textvariable=self.dblParaTransY,state="readonly").grid(row=2, column=1, padx=3, pady=3,)
-        Entry(lfParameter,textvariable=self.dblParaTransX,state="readonly").grid(row=3, column=1, padx=3, pady=3,)
+        Entry(lfParameter,textvariable=self.dblParaM_Y,state="readonly").grid(row=0, column=1, padx=3, pady=3,)
+        Entry(lfParameter,textvariable=self.dblParaM_X,state="readonly").grid(row=1, column=1, padx=3, pady=3,)
+        Entry(lfParameter,textvariable=self.dblParaRot_Y,state="readonly").grid(row=2, column=1, padx=3, pady=3,)
+        Entry(lfParameter,textvariable=self.dblParaRot_X,state="readonly").grid(row=3, column=1, padx=3, pady=3,)
+        Entry(lfParameter,textvariable=self.dblParaTrans_Y,state="readonly").grid(row=4, column=1, padx=3, pady=3,)
+        Entry(lfParameter,textvariable=self.dblParaTrans_X,state="readonly").grid(row=5, column=1, padx=3, pady=3,)
 
-        self.punktListTrans = Treeview(lfTrans)
+        self.punktListTrans = Treeview(lfTrans,selectmode="none")
         self.punktListTrans.grid(row=0, column=0, padx=3, pady=3)
         self.punktListTrans["columns"] = ("Y", "X","Rk Y","Rk X")
         self.punktListTrans.column("#0",width = 50, minwidth=50)
@@ -83,16 +97,21 @@ class FensterTrans(Frame):
         self.punktListTrans.heading("X",text="X")
         self.punktListTrans.heading("Rk Y",text="Restklaffe Y")
         self.punktListTrans.heading("Rk X",text="Restklaffe X")
-        
+        self.punktListTransScroll = Scrollbar(lfTrans,orient="vertical", command=self.punktListTrans.yview)
+        self.punktListTransScroll.grid(row=0, column=1, sticky="nse")
+        self.punktListTrans.configure(yscrollcommand=self.punktListTransScroll.set)
+
         # self.focus_set()
         # self.grab_set()
         # self.wait_window()
 
     def loadPoints(self, text, sepDec, sepVal, system):
         if system == 0:
+            self.__dict_PLQuelle.clear()
             self.__dict_PLQuelle.einlesenListe(text, sepDec, sepVal)
             self.showPoints(system, self.__dict_PLQuelle)
         else:
+            self.__dict_PLZiel.clear()
             self.__dict_PLZiel.einlesenListe(text, sepDec, sepVal)
             self.showPoints(system, self.__dict_PLZiel)
 
@@ -105,8 +124,24 @@ class FensterTrans(Frame):
         else:
             self.fillTree(self.punktListTrans,dicP)
 
+
+    def showParam(self,parameter):
+        self.dblParaM_Y.set(parameter["m_Y"])
+        self.dblParaRot_Y.set(parameter["rot_Y"])
+        self.dblParaTrans_Y.set(parameter["Y0"])
+        self.dblParaTrans_X.set(parameter["X0"])
+        if "m_X" in parameter:
+            self.dblParaM_X.set(parameter["m_X"])
+            self.dblParaRot_X.set(parameter["rot_X"])
+        else:
+            self.dblParaM_X.set(parameter["m_Y"])
+            self.dblParaRot_X.set(parameter["rot_Y"])
+
+
     def fillTree(self, treename, dicP):
-        treename.delete(*treename.get_children())
+        for row in treename.get_children():
+            treename.delete(row)
+
         dP = dicP.get_dic()
         keys = list(dP.keys())
         if treename == self.punktListTrans:
@@ -130,15 +165,19 @@ class FensterTrans(Frame):
         
 
     def BtnPressedCalc(self):
-        ht = HelmertTrans(self.__dict_PLQuelle, self.__dict_PLZiel)
-        punkte, parameter = ht.get_result()
+        l_p1exclude = []
+        for i in self.punktListDest.selection():
+            l_p1exclude.append(self.punktListDest.item(i,"text"))
+
+        if self.radioTrans.get() == 0:
+            punkte, parameter = HelmertTrans(self.__dict_PLQuelle, self.__dict_PLZiel, l_p1exclude).get_result()
+        else:
+            punkte, parameter = AffinTrans(self.__dict_PLQuelle, self.__dict_PLZiel, l_p1exclude).get_result()
         self.showPoints(2, punkte)
         self.__dict_PLTrans.set_dic(punkte)
+        self.showParam(parameter)
 
-        self.dblParaM.set(parameter["m"])
-        self.dblParaRot.set(parameter["epsilon"])
-        self.dblParaTransY.set(parameter["Y0"])
-        self.dblParaTransX.set(parameter["X0"])
+
 
 
 
