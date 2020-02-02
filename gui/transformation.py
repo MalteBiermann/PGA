@@ -5,7 +5,8 @@ if __name__ == "__main__":
     import sys
     sys.path.append(".")
 
-from operation.helmerttransformation import HelmertTrans, Punkt_Dic
+from operation.helmerttransformation import HelmertTrans
+from datentyp.punkt import Punkt_Dic
 from gui.load_pointList import Fenster_loadPList
 
 class FensterTrans(Frame):
@@ -48,7 +49,7 @@ class FensterTrans(Frame):
         self.punktListSource = Treeview(lfSource)
         self.punktListSource.grid(row=0, column=0, padx=3, pady=3)
         self.punktListSource["columns"] = ("y", "x")
-        self.punktListSource.column("#0",width = 50, minwidth=50)
+        self.punktListSource.column("#0",width = 40, minwidth=40)
         self.punktListSource.heading("#0",text="id")
         self.punktListSource.heading("y",text="y")
         self.punktListSource.heading("x",text="x")
@@ -56,7 +57,7 @@ class FensterTrans(Frame):
         self.punktListDest = Treeview(lfDest)
         self.punktListDest.grid(row=0, column=0, padx=3, pady=3)
         self.punktListDest["columns"] = ("y", "x")
-        self.punktListDest.column("#0",width = 50, minwidth=50)
+        self.punktListDest.column("#0",width = 40, minwidth=40)
         self.punktListDest.heading("#0",text="id")
         self.punktListDest.heading("y",text="y")
         self.punktListDest.heading("x",text="x")
@@ -112,14 +113,14 @@ class FensterTrans(Frame):
             for i in range(len(dP)):
                 id = keys[i]
                 if "w" in dP[id]:
-                    treename.insert("",i+1,text=id, values=(dP[id]["Punkt"].get_y(), dP[id]["Punkt"].get_x(), \
+                    treename.insert("",i+1,text=id, values=(dP[id]["coord"].get_y(), dP[id]["coord"].get_x(), \
                         dP[id]["w"]["y"].länge(), dP[id]["w"]["x"].länge() ))
                 else:
-                    treename.insert("",i+1,text=id, values=(dP[id]["Punkt"].get_y(), dP[id]["Punkt"].get_x()))
+                    treename.insert("",i+1,text=id, values=(dP[id]["coord"].get_y(), dP[id]["coord"].get_x()))
         else:
             for i in range(len(dP)):
                 id = keys[i]
-                treename.insert("",i+1,text=id, values=(dP[id].get_y(), dP[id].get_x()))
+                treename.insert("",i+1,text=id, values=(dP[id]["coord"].get_y(), dP[id]["coord"].get_x()))
 
 
     def BtnPressedLoadPoints(self):

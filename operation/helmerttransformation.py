@@ -6,97 +6,59 @@ if __name__ == "__main__":
 
 from datentyp.punkt import Punkt,Punkt_Dic
 from datentyp.strecke import Strecke
+from operation.transformation import Transformation
 
 
-class HelmertTrans:
+class HelmertTrans(Transformation):
     def __init__(self, d_p0, d_p1, l_p1exclude=None):
-        dicP0 = d_p0.get_dic()
-        dicP1 = d_p1.get_dic()        
-        self.__dicP2 = Punkt_Dic()
-        self.__tParameter = {}
-
-        if l_p1exclude is not None:
-            for e in l_p1exclude:
-                dicP1.pop(e, None)
-
-        l_p_ident = []
-        for k in dicP0.keys():
-            if k in dicP1.keys():
-                l_p_ident.append(k)
-
-        y_cog = 0
-        x_cog = 0
-        Y_cog = 0
-        X_cog = 0
-        for k in l_p_ident:
-            y_cog += dicP0[k].get_y()
-            x_cog += dicP0[k].get_x()
-            Y_cog += dicP1[k].get_y()
-            X_cog += dicP1[k].get_x()
-
-        i = len(l_p_ident)
-        y_cog = y_cog / i
-        x_cog = x_cog / i
-        Y_cog = Y_cog / i
-        X_cog = X_cog / i
-
-        PDic0_reduced = {}
-        PDic1_reduced = {}
-        for k in l_p_ident:
-            y_red = dicP0[k].get_y() - y_cog
-            x_red = dicP0[k].get_x() - x_cog
-            PDic0_reduced.update({k: Punkt(y_red, x_red)})
-
-            Y_red = dicP1[k].get_y() - Y_cog
-            X_red = dicP1[k].get_x() - X_cog
-            PDic1_reduced.update({k: Punkt(Y_red, X_red)})
+        super().__init__(d_p0, d_p1, l_p1exclude=None)
 
         o_nenner = 0
         a_nenner = 0
         o_zähler = 0
         a_zähler = 0
-        for k in l_p_ident:
-            o_zähler += PDic0_reduced[k].get_x() * PDic1_reduced[k].get_y() -\
-                PDic0_reduced[k].get_y() * PDic1_reduced[k].get_x()
-            o_nenner += PDic0_reduced[k].get_x()**2 + PDic0_reduced[k].get_y()**2
+        for k in self._l_p_ident:
+            o_zähler += self._PDic0_reduced[k].get_x() * self._PDic1_reduced[k].get_y() -\
+                self._PDic0_reduced[k].get_y() * self._PDic1_reduced[k].get_x()
+            o_nenner += self._PDic0_reduced[k].get_x()**2 + self._PDic0_reduced[k].get_y()**2
             
-            a_zähler += PDic0_reduced[k].get_x() * PDic1_reduced[k].get_x() +\
-                PDic0_reduced[k].get_y() * PDic1_reduced[k].get_y()
-            a_nenner += PDic0_reduced[k].get_x()**2 + PDic0_reduced[k].get_y()**2
+            a_zähler += self._PDic0_reduced[k].get_x() * self._PDic1_reduced[k].get_x() +\
+                self._PDic0_reduced[k].get_y() * self._PDic1_reduced[k].get_y()
+            a_nenner += self._PDic0_reduced[k].get_x()**2 + self._PDic0_reduced[k].get_y()**2
 
         a = a_zähler / a_nenner
         o = o_zähler / o_nenner
         maßstab = sqrt(a ** 2 + o ** 2)
         epsilon = atan(o / a)
-        Y0 = Y_cog - a * y_cog - o * x_cog
-        X0 = X_cog - a * x_cog + o * y_cog
+        Y0 = self._P1_cog.get_y() - a * self._P0_cog.get_y() - o * self._P0_cog.get_x()
+        X0 = self._P1_cog.get_x() - a * self._P0_cog.get_x() + o * self._P0_cog.get_y()
         
-        self.__tParameter.update({"m":maßstab})
-        self.__tParameter.update({"epsilon":epsilon})
-        self.__tParameter.update({"Y0":Y0})
-        self.__tParameter.update({"X0":X0})
+        self._tParameter.update({"m":maßstab})
+        self._tParameter.update({"epsilon":epsilon})
+        self._tParameter.update({"Y0":Y0})
+        self._tParameter.update({"X0":X0})
 
 
         dicPTrans = {}
-        for k,v in dicP0.items():
-            y = v.get_y()
-            x = v.get_x()
-            id = v.get_id()
+        for k,v in self._dicP0.items():
+            y = v["coord"].get_y()
+            x = v["coord"].get_x()
+            id = v["coord"].get_id()
             Y = Y0 + a * y + o * x
             X = X0 + a * x - o * y
-            pTransformiert = {"Punkt":Punkt(Y,X,id)}
+            pTransformiert = {"coord":Punkt(Y,X,id)}
             dicPTrans.update({id:pTransformiert})            
-            if k in l_p_ident:
-                wy = - Y0 - a*dicP0[k].get_y() - o*dicP0[k].get_x() + dicP1[k].get_y()
-                wx = - X0 - a*dicP0[k].get_x() + o*dicP0[k].get_y() + dicP1[k].get_x()
+            if k in self._l_p_ident:
+                wy = - Y0 - a*self._dicP0[k]["coord"].get_y() - o*self._dicP0[k]["coord"].get_x() + self._dicP1[k]["coord"].get_y()
+                wx = - X0 - a*self._dicP0[k]["coord"].get_x() + o*self._dicP0[k]["coord"].get_y() + self._dicP1[k]["coord"].get_x()
                 w = {"y":Strecke.init_länge(wy), "x":Strecke.init_länge(wx)}
                 dicPTrans[k].update({"w":w})
         
-        self.__dicP2.set_dic(dicPTrans)
+        self._dicP2.set_dic(dicPTrans)
 
 
     def get_result(self):
-        return (self.__dicP2, self.__tParameter)
+        return (self._dicP2, self._tParameter)
 
 
 
@@ -129,13 +91,12 @@ if __name__ == "__main__":
     dict_PLQuelle.einlesenDatei("testdata/helmert1.csv", decSep=".", valSep=";")
     dict_PLZiel.einlesenDatei("testdata/helmert2.csv", decSep=".", valSep=";")
 
-    ht = HelmertTrans(dict_PLQuelle, dict_PLZiel)
+    punkte,parameter = HelmertTrans(dict_PLQuelle, dict_PLZiel).get_result()
 
-    punkte,parameter = ht.get_result()
     punkte = punkte.get_dic()
     for k,v in punkte.items():
         if "w" in v.keys():
-            print(k,v["Punkt"], "RK:", v["w"]["y"].länge(), v["w"]["x"].länge())
+            print(k,v["coord"], "RK:", v["w"]["y"].länge(), v["w"]["x"].länge())
         else:
-            print(k,v["Punkt"])
+            print(k,v["coord"])
     print(parameter)
