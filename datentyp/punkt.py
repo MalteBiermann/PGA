@@ -61,6 +61,9 @@ class Punkt_Dic:
     def set_dic(self,d):
         self.__Pdic = d
 
+    def clear(self):
+        self.__Pdic.clear()
+
     def einlesenListe(self, liste, sepDec=".",sepVal=";"):
         for l in liste.splitlines():
             if sepDec != ".":
