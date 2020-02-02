@@ -13,21 +13,18 @@ class HelmertTrans(Transformation):
     def __init__(self, d_p0, d_p1, l_p1exclude=None):
         super().__init__(d_p0, d_p1, l_p1exclude=None)
 
-        o_nenner = 0
-        a_nenner = 0
+        nenner = 0
         o_zähler = 0
         a_zähler = 0
         for k in self._l_p_ident:
             o_zähler += self._PDic0_reduced[k].get_x() * self._PDic1_reduced[k].get_y() -\
                 self._PDic0_reduced[k].get_y() * self._PDic1_reduced[k].get_x()
-            o_nenner += self._PDic0_reduced[k].get_x()**2 + self._PDic0_reduced[k].get_y()**2
-            
+            nenner += self._PDic0_reduced[k].get_x()**2 + self._PDic0_reduced[k].get_y()**2
             a_zähler += self._PDic0_reduced[k].get_x() * self._PDic1_reduced[k].get_x() +\
                 self._PDic0_reduced[k].get_y() * self._PDic1_reduced[k].get_y()
-            a_nenner += self._PDic0_reduced[k].get_x()**2 + self._PDic0_reduced[k].get_y()**2
 
-        a = a_zähler / a_nenner
-        o = o_zähler / o_nenner
+        a = a_zähler / nenner
+        o = o_zähler / nenner
         maßstab = sqrt(a ** 2 + o ** 2)
         epsilon = atan(o / a)
         Y0 = self._P1_cog.get_y() - a * self._P0_cog.get_y() - o * self._P0_cog.get_x()
