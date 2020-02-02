@@ -9,12 +9,10 @@ from operation.helmerttransformation import HelmertTrans
 from operation.affintransformation import AffinTrans
 from datentyp.punkt import Punkt_Dic
 from gui.load_pointList import Fenster_loadPList
-from copy import deepcopy
 
 class FensterTrans(Frame):
-    def __init__(self, master, controller):
+    def __init__(self, master):
         super().__init__(master)
-        self.controller = controller
 
         self.__dict_PLQuelle = Punkt_Dic()
         self.__dict_PLZiel = Punkt_Dic()
@@ -30,25 +28,25 @@ class FensterTrans(Frame):
         self.dblParaTrans_Y = DoubleVar()
         self.dblParaTrans_X = DoubleVar()
 
-        self.radioTrans = IntVar(root,value=0)
+        self.radioTrans = IntVar(value=0)
 
         self.grid()
 
-        lfTransType = LabelFrame(root, text="Ebene Transformationen")
+        lfTransType = LabelFrame(self, text="Ebene Transformationen")
         lfTransType.grid(row=0, column=0, padx=3, pady=3, sticky="w")
-        lfSource = LabelFrame(root, text="Quellsystem")
+        lfSource = LabelFrame(self, text="Quellsystem")
         lfSource.grid(row=1, column=0, padx=3, pady=3, sticky="w", columnspan=2)
-        lfDest = LabelFrame(root, text="Zielsystem (Markierung = Nichtbeachtung des Passpunktes)")
+        lfDest = LabelFrame(self, text="Zielsystem (Markierung = Nichtbeachtung des Passpunktes)")
         lfDest.grid(row=1, column=2, padx=3, pady=3, sticky="w", columnspan=2)
-        lfParameter = LabelFrame(root, text="Parameter")
+        lfParameter = LabelFrame(self, text="Parameter")
         lfParameter.grid(row=2, column=2, padx=3, pady=3, sticky="e", columnspan=2)
-        lfTrans = LabelFrame(root, text="Transformiert")
+        lfTrans = LabelFrame(self, text="Transformiert")
         lfTrans.grid(row=4, column=0, padx=3, pady=3, sticky="w",columnspan=3)
 
         Radiobutton(lfTransType,text="Helmerttransformation", variable=self.radioTrans, value=0).grid(row=0, column=0, padx=3, pady=3)
         Radiobutton(lfTransType,text="Affintransformation", variable=self.radioTrans, value=1).grid(row=0, column=1, padx=3, pady=3)
 
-        Button(root,text="Lade Punkte",command=self.BtnPressedLoadPoints).grid(row=0, column=1, padx=3, pady=3, sticky="w")
+        Button(self,text="Lade Punkte",command=self.BtnPressedLoadPoints).grid(row=0, column=1, padx=3, pady=3, sticky="w")
 
         self.punktListSource = Treeview(lfSource,selectmode="none")
         self.punktListSource.grid(row=0, column=0, padx=3, pady=3)
@@ -72,7 +70,7 @@ class FensterTrans(Frame):
         self.punktListDestScroll.grid(row=0, column=1, sticky="nse")
         self.punktListDest.configure(yscrollcommand=self.punktListDestScroll.set)
 
-        Button(root,text="Berechnen",command=self.BtnPressedCalc).grid(row=2, column=1, padx=3, pady=3, columnspan=1)
+        Button(self,text="Berechnen",command=self.BtnPressedCalc).grid(row=2, column=1, padx=3, pady=3, columnspan=1)
 
         Label(lfParameter,text="Maßstab Y").grid(row=0, column=0, padx=3, pady=3,)
         Label(lfParameter,text="Maßstab X").grid(row=1, column=0, padx=3, pady=3,)
@@ -184,9 +182,9 @@ class FensterTrans(Frame):
 
 if __name__ == "__main__":
 
-    root = Tk()
-    root.title("Transformationen")
-    root.geometry
-    appTrans = FensterTrans(root,root)
+    self = Tk()
+    self.title("Transformationen")
+    self.geometry
+    appTrans = FensterTrans(self)
     appTrans.mainloop()
 

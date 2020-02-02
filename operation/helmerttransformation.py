@@ -88,7 +88,7 @@ if __name__ == "__main__":
     dict_PLQuelle.einlesenDatei("testdata/helmert1.csv", decSep=".", valSep=";")
     dict_PLZiel.einlesenDatei("testdata/helmert2.csv", decSep=".", valSep=";")
 
-    punkte,parameter = HelmertTrans(dict_PLQuelle, dict_PLZiel).get_result()
+    punkte,parameter = HelmertTrans(dict_PLQuelle, dict_PLZiel, None).get_result()
 
     punkte = punkte.get_dic()
     for k,v in punkte.items():
