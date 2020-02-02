@@ -10,8 +10,8 @@ from operation.transformation import Transformation
 
 
 class HelmertTrans(Transformation):
-    def __init__(self, d_p0, d_p1, l_p1exclude=None):
-        super().__init__(d_p0, d_p1, l_p1exclude=None)
+    def __init__(self, d_p0, d_p1, l_p1exclude):
+        super().__init__(d_p0, d_p1, l_p1exclude)
 
         nenner = 0
         o_zähler = 0
@@ -25,13 +25,13 @@ class HelmertTrans(Transformation):
 
         a = a_zähler / nenner
         o = o_zähler / nenner
-        maßstab = sqrt(a ** 2 + o ** 2)
+        m = sqrt(a ** 2 + o ** 2)
         epsilon = atan(o / a)
         Y0 = self._P1_cog.get_y() - a * self._P0_cog.get_y() - o * self._P0_cog.get_x()
         X0 = self._P1_cog.get_x() - a * self._P0_cog.get_x() + o * self._P0_cog.get_y()
         
-        self._tParameter.update({"m":maßstab})
-        self._tParameter.update({"epsilon":epsilon})
+        self._tParameter.update({"m_Y":m})
+        self._tParameter.update({"rot_Y":epsilon})
         self._tParameter.update({"Y0":Y0})
         self._tParameter.update({"X0":X0})
 
