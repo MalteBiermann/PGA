@@ -8,6 +8,7 @@ from datentyp.winkel import Winkel
 from datentyp.punkt import Punkt
 from datentyp.strecke import Strecke
 
+
 class Rückwärtsschnitt:
     def __init__(self, pA, pB, pM, aAlpha, aBeta):
         self.__pA = pA
@@ -22,7 +23,6 @@ class Rückwärtsschnitt:
         aBeta = dirB.get_w() - dirM.get_w()
         aAlpha,aBeta = [e + 2*pi if e < 0 else e for e in [aAlpha,aBeta]]
         return cls(pA, pB, pM, Winkel(aAlpha), Winkel(aBeta))
-
 
     def schneiden(self):
         A_y = self.__pA.get_y()
@@ -53,8 +53,6 @@ class Rückwärtsschnitt:
 
 def cot(a):
     return (1/tan(a))
-
-
 
 
 if __name__ == "__main__":
