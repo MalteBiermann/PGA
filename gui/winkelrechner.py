@@ -5,20 +5,20 @@ if __name__ == "__main__":
     sys.path.append(".")
 
 from datentyp.winkel import Winkel
+from gui.template import GuiTemplate
 
-
-class FensterWinkelrechner(Frame):
+class FensterWinkelrechner(GuiTemplate):
     def __init__(self, master):
         super().__init__(master)
+        self.grid()
 
         self.strEntryGrad = StringVar()
         self.strEntryRad = StringVar()
         self.strEntryGon = StringVar()
-        self.grid()
 
-        Label(self, text="Grad:").grid(row=0, column=0)
-        Label(self, text="Rad:").grid(row=1, column=0)
-        Label(self, text="Gon:").grid(row=2, column=0)
+        Label(self, text="Grad").grid(row=0, column=0)
+        Label(self, text="Rad").grid(row=1, column=0)
+        Label(self, text="Gon").grid(row=2, column=0)
 
         Entry(self, textvariable=self.strEntryGrad).grid(
             row=0, column=1, padx=3, pady=3)
@@ -33,10 +33,6 @@ class FensterWinkelrechner(Frame):
             row=1, column=2, padx=3, pady=3)
         Button(self, text="Berechne", command=self.btnPressedBerechneGon).grid(
             row=2, column=2, padx=3, pady=3)
-
-        self.focus_set()
-        self.grab_set()
-        self.wait_window()
 
     def btnPressedBerechneGrad(self):
         w = Winkel(float(self.strEntryGrad.get().replace(",", ".")),einheit="grad")
@@ -55,7 +51,6 @@ class FensterWinkelrechner(Frame):
 
 
 if __name__ == "__main__":
-
     root = Tk()
     root.title("Winkelrechner")
     root.geometry

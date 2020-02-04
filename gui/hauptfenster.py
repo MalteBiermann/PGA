@@ -1,8 +1,8 @@
+from tkinter import Frame,Tk,Button,Toplevel
+
 if __name__ == "__main__":
     import sys
     sys.path.append(".")
-
-from tkinter import Frame,Tk,Button,Toplevel
 
 import gui.winkelrechner
 import gui.rückwärtsschnitt
@@ -14,25 +14,22 @@ import gui.transformation
 class HauptFenster(Frame):
     def __init__(self, master):
         super().__init__(master)
-
-#        self.root = master
         self.grid()
 
-
         Button(self, text="Winkelrechner", command=self.openFensterWinkelrechner).grid(
-            row=1, column=0, padx=3, pady=3)
+            row=1, column=0, padx=3, pady=3, sticky="w")
         Button(self, text="Hauptaufgaben", command=self.openFensterHA).grid(
-            row=2, column=0, padx=3, pady=3)
+            row=2, column=0, padx=3, pady=3, sticky="w")
         Button(self, text="Bogenschnitt", command=self.openFensterBS).grid(
-            row=3, column=0, padx=3, pady=3)
+            row=3, column=0, padx=3, pady=3, sticky="w")
         Button(self, text="Rückwärtsschnitt", command=self.openFensterRS).grid(
-            row=3, column=1, padx=3, pady=3)
+            row=3, column=1, padx=3, pady=3, sticky="w")
         Button(self, text="Vorwärtsschnitt", command=self.openFensterVS).grid(
-            row=3, column=2, padx=3, pady=3)
+            row=3, column=2, padx=3, pady=3, sticky="w")
         Button(self, text="Polygonzug", command=self.openFensterPZ).grid(
-            row=4, column=0, padx=3, pady=3)
+            row=4, column=0, padx=3, pady=3, sticky="w")
         Button(self, text="Transformation", command=self.openFensterTrans).grid(
-            row=5, column=0, padx=3, pady=3)
+            row=5, column=0, padx=3, pady=3, sticky="w")
 
     def openFensterWinkelrechner(self):
         top = Toplevel()

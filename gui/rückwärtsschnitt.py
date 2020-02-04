@@ -1,4 +1,4 @@
-from tkinter import Frame,Tk,Button,Toplevel,StringVar,DoubleVar,LabelFrame,Entry,Label,Button,Radiobutton, IntVar
+from tkinter import Frame,Tk,Button,Toplevel,StringVar,DoubleVar,LabelFrame,Entry,Label,Button,Radiobutton,IntVar
 
 if __name__ == "__main__":
     import sys
@@ -7,8 +7,9 @@ if __name__ == "__main__":
 from datentyp.punkt import Punkt
 from datentyp.winkel import Winkel
 from operation.rückwärtsschnitt import Rückwärtsschnitt
+from gui.template import GuiTemplate
 
-class FensterRS(Frame):
+class FensterRS(GuiTemplate):
     def __init__(self, master):
         super().__init__(master)
         self.grid()
@@ -68,15 +69,10 @@ class FensterRS(Frame):
         self.eInputBeta = Entry(self, textvariable=self.eingabeBeta)
         self.eInputBeta.grid(row=5, column=5, padx=3, pady=3, columnspan=2)
 
-        Button(self,text="Berechnen",command=self.BtnPressedCalc).grid(row=6, column=4, padx=3, pady=3, sticky="",columnspan=2)
+        Button(self,text="Berechnen",command=self.BtnPressedCalc).grid(row=6, column=4, padx=3, pady=3, columnspan=2)
 
         Entry(self, textvariable=self.ausgabeN_y, state="readonly").grid(row=8, column=4, padx=3, pady=3, columnspan=2)
         Entry(self, textvariable=self.ausgabeN_x, state="readonly").grid(row=9, column=4, padx=3, pady=3, columnspan=2)
-
-        # self.focus_set()
-        # self.grab_set()
-        # self.wait_window()     
-
 
     def BtnPressedCalc(self):
         A_y = float(self.eingabeA_y.get().replace(",", "."))
@@ -98,10 +94,8 @@ class FensterRS(Frame):
             aAlpha = Winkel(float(self.eingabeAlpha.get().replace(",", ".")), "gon")
             aBeta = Winkel(float(self.eingabeBeta.get().replace(",", ".")), "gon")
             pN = Rückwärtsschnitt(pA,pB,pM,aAlpha,aBeta).schneiden()
-
         self.ausgabeN_y.set(pN.get_y())
         self.ausgabeN_x.set(pN.get_x())
-
 
     def toggleEntry(self):
         if self.radioButtonSelection.get() == 1:
@@ -116,11 +110,6 @@ class FensterRS(Frame):
             self.eInputT_NA.config(state="normal")
             self.eInputT_NM.config(state="normal")
             self.eInputT_NB.config(state="normal")
-
-
-
-
-
 
 
 if __name__ == "__main__":
