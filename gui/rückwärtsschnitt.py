@@ -1,4 +1,4 @@
-from tkinter import Frame,Tk,Button,Toplevel,StringVar,DoubleVar,LabelFrame,Entry,Label,Button,Radiobutton,IntVar
+from tkinter import Tk,Button,StringVar,Entry,Label,Button,Radiobutton,IntVar
 
 if __name__ == "__main__":
     import sys
@@ -43,8 +43,8 @@ class FensterRS(GuiTemplate):
         Label(self,text="Alpha").grid(row=4, column=3, padx=3, pady=3, columnspan=2)
         Label(self,text="Beta").grid(row=4, column=5, padx=3, pady=3 ,columnspan=2)
         Label(self,text="Winkel / gon").grid(row=5, column=0, padx=3, pady=3, columnspan=1)
-        Label(self,text="Y").grid(row=8, column=0, padx=3, pady=3, columnspan=2)
-        Label(self,text="X").grid(row=9, column=0, padx=3, pady=3, columnspan=2)
+        Label(self,text="Y").grid(row=8, column=2, padx=3, pady=3, columnspan=2)
+        Label(self,text="X").grid(row=9, column=2, padx=3, pady=3, columnspan=2)
         Label(self,text="Punkt N").grid(row=7, column=4, padx=3, pady=3, columnspan=2)
 
         self.RBdir = Radiobutton(self, value=0, variable=self.radioButtonSelection, command=self.toggleEntry)
