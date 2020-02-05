@@ -6,8 +6,6 @@ if __name__ == "__main__":
     import sys
     sys.path.append(".")
 
-# from datentyp.strecke import Strecke
-# from datentyp.winkel import Winkel
 
 class Punkt:
     def __init__(self, p_y=0, p_x=0, pId=""):
