@@ -48,11 +48,11 @@ class AffinTrans(Transformation):
         for k,v in self._dicP0.items():
             y = v["coord"].get_y()
             x = v["coord"].get_x()
-            id = v["coord"].get_id()
+            pId = v["coord"].get_id()
             Y = Y0 + a3 * y + a4 * x
             X = X0 + a1 * x - a2 * y
-            pTransformiert = {"coord":Punkt(Y,X,id)}
-            dicPTrans.update({id:pTransformiert})            
+            pTransformiert = {"coord":Punkt(Y,X,pId)}
+            dicPTrans.update({pId:pTransformiert})            
             if k in self._l_p_ident:
                 wy = - Y0 - a3*self._dicP0[k]["coord"].get_y() - a4*self._dicP0[k]["coord"].get_x() + self._dicP1[k]["coord"].get_y()
                 wx = - X0 - a1*self._dicP0[k]["coord"].get_x() + a2*self._dicP0[k]["coord"].get_y() + self._dicP1[k]["coord"].get_x()

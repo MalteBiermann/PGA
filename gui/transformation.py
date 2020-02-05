@@ -143,16 +143,16 @@ class FensterTrans(Frame):
         keys = list(dP.keys())
         if treename == self.punktListTrans:
             for i in range(len(dP)):
-                id = keys[i]
-                if "w" in dP[id]:
-                    treename.insert("",i+1,text=id, values=(dP[id]["coord"].get_y(), dP[id]["coord"].get_x(), \
-                        dP[id]["w"]["y"].länge(), dP[id]["w"]["x"].länge() ))
+                pId = keys[i]
+                if "w" in dP[pId]:
+                    treename.insert("",i+1,text=pId, values=(dP[pId]["coord"].get_y(), dP[pId]["coord"].get_x(), \
+                        dP[pId]["w"]["y"].länge(), dP[pId]["w"]["x"].länge() ))
                 else:
-                    treename.insert("",i+1,text=id, values=(dP[id]["coord"].get_y(), dP[id]["coord"].get_x()))
+                    treename.insert("",i+1,text=pId, values=(dP[pId]["coord"].get_y(), dP[pId]["coord"].get_x()))
         else:
             for i in range(len(dP)):
-                id = keys[i]
-                treename.insert("",i+1,text=id, values=(dP[id]["coord"].get_y(), dP[id]["coord"].get_x()))
+                pId = keys[i]
+                treename.insert("",i+1,text=pId, values=(dP[pId]["coord"].get_y(), dP[pId]["coord"].get_x()))
 
     def BtnPressedLoadPoints(self):
         top = Toplevel()

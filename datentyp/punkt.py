@@ -10,10 +10,10 @@ if __name__ == "__main__":
 # from datentyp.winkel import Winkel
 
 class Punkt:
-    def __init__(self, p_y=0, p_x=0, id=""):
+    def __init__(self, p_y=0, p_x=0, pId=""):
         self.__y = deepcopy(p_y)
         self.__x = deepcopy(p_x)
-        self.__id = deepcopy(id)
+        self.__pId = deepcopy(pId)
 
     def get_y(self):
         return self.__y
@@ -22,7 +22,7 @@ class Punkt:
         return self.__x
 
     def get_id(self):
-        return self.__id
+        return self.__pId
 
     def set_y(self, y):
         self.__y = y
@@ -30,8 +30,8 @@ class Punkt:
     def set_x(self, x):
         self.__x = x
 
-    def set_id(self, id):
-        self.__id = id
+    def set_id(self, pId):
+        self.__id = pId
 
     def get_json(self):
         return self.__dict__
@@ -69,16 +69,16 @@ class Punkt_Dic:
             if sepDec != ".":
                 l = l.replace(sepDec,".")
             try:
-                id, y, x = l.split(sepVal)
-                p = Punkt(float(y), float(x), id)
-                self.__Pdic.update({id: {"coord":p}})
+                pId, y, x = l.split(sepVal)
+                p = Punkt(float(y), float(x), pId)
+                self.__Pdic.update({pId: {"coord":p}})
             except:
                 pass
 
-    def einlesenDatei(self, datei,decSep=".",valSep=";"):
-        with open(datei) as fh:
+    def einlesenDatei(self, filepath, sepDec=".",sepVal=";"):
+        with open(filepath) as fh:
             lines = fh.read()
-            self.einlesenListe(lines,decSep,valSep)
+            self.einlesenListe(lines,sepDec,sepVal)
 
 
 
