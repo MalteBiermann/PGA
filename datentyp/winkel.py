@@ -9,7 +9,6 @@ class Winkel:
             self.__w = self.grad2rad(w)
         else:
             self.__w = w
-        self.__w = self.__reduce2pi(self.__w)
 
     def get_w(self, einheit="rad"):
         if einheit == "gon":
@@ -43,13 +42,6 @@ class Winkel:
 
     def gon2rad(self, gon):
         return gon * pi / 200
-
-    def __reduce2pi(self, v):
-        if v<(2*pi):
-            v += 2*pi
-        if v>(2*pi):
-            v -= 2*pi
-        return v
 
 
 if __name__ == "__main__":
