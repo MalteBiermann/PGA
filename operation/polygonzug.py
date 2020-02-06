@@ -23,7 +23,8 @@ class Polygonzug():
             beta_summe += self.__Slist[i]["beta"].get_w()
         
         w_beta = self.__Slist[-2]["t_n"].get_w() - (self.__Slist[0]["t_0"].get_w() + beta_summe - (n*pi))
-        w_beta = 2*pi - w_beta
+        if w_beta > pi:
+            w_beta = 2*pi - w_beta
         w_beta_n = w_beta / n
 
         # r
@@ -109,7 +110,7 @@ if __name__ == "__main__":
         for k in res[i].keys():
             if k in ("sId", "beta", "t_0", "t_n", "r", "dy", "dx", "Punkt"):
                 if type(res[i][k]).__name__ == "Winkel":
-                    print(k, res[i][k].get_w("gon"), end=" ")
+                    print(k, res[i][k].get_w("gon"), end="   ")
                 else:
-                    print(k, res[i][k], end=" ")
+                    print(k, res[i][k], end="   ")
         print("\r")

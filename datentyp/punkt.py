@@ -29,7 +29,7 @@ class Punkt:
         self.__x = x
 
     def set_id(self, pId):
-        self.__id = pId
+        self.__pId = pId
 
     def get_json(self):
         return self.__dict__
@@ -62,6 +62,13 @@ class Punkt_Dic:
     def clear(self):
         self.__Pdic.clear()
 
+    def addPoint(self,p):
+        pId = p.get_id()
+        self.__Pdic.update({pId: {"coord":p}})
+
+    def addAttribute2Point(self,pId,a):
+        self.__Pdic.update({pId: a})
+
     def einlesenListe(self, liste, sepDec=".",sepVal=";"):
         for l in liste.splitlines():
             if sepDec != ".":
@@ -69,7 +76,7 @@ class Punkt_Dic:
             try:
                 pId, y, x = l.split(sepVal)
                 p = Punkt(float(y), float(x), pId)
-                self.__Pdic.update({pId: {"coord":p}})
+                self.addPoint(p)
             except:
                 pass
 
