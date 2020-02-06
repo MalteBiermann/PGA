@@ -43,6 +43,10 @@ class Winkel:
     def gon2rad(self, gon):
         return gon * pi / 200
 
+    def neg2pos(self):
+        if self.__w < 0:
+            self.__w += 2*pi
+
 
 if __name__ == "__main__":
     w0 = Winkel(90, "grad")
