@@ -22,10 +22,8 @@ class Polygonzug():
         for i in range(1,n+1):  # Standpunkt 1...6
             beta_summe += self.__Slist[i]["beta"].get_w()
         
-        w_beta = (self.__Slist[-2]["t_n"].get_w() - self.__Slist[0]["t_0"].get_w()) - (beta_summe + (n*pi))
-        w_beta %= (2*pi)
-        w_beta -= 2*pi
-        beta_summe %= pi
+        w_beta = self.__Slist[-2]["t_n"].get_w() - (self.__Slist[0]["t_0"].get_w() + beta_summe - (n*pi))
+        w_beta = 2*pi - w_beta
         w_beta_n = w_beta / n
 
         # r
