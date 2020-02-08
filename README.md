@@ -1,7 +1,7 @@
 # Programmieren geodätischer Aufgaben Python/Tkinter Skript
 Python-Skript zur Berechnung grundlegender geodätischer Aufgaben
 
-**Under development / Alpha status**
+**Under development**
 
 ## Features
   * Winkelumrechnung
@@ -16,6 +16,7 @@ Python-Skript zur Berechnung grundlegender geodätischer Aufgaben
   * Transformation
     * Helmert 2D
     * Affin 2D
+  * Best denglish
 
 ##  Rahmen
 Jade HS
