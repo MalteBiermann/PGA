@@ -2,8 +2,9 @@ import json
 import urllib.request
 import ssl
 
-import sys
-sys.path.append(".")
+if __name__ == "__main__":
+    import sys
+    sys.path.append(".")
 
 from datentyp.punkt import Punkt
 
