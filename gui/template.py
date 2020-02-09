@@ -1,4 +1,5 @@
-from tkinter import Frame, Tk, Button, Toplevel, Menu
+from tkinter import Frame, Tk, Button, Toplevel, Menu, messagebox
+from os import startfile,open
 
 if __name__ == "__main__":
     import sys
@@ -8,7 +9,10 @@ if __name__ == "__main__":
 class GuiTemplate(Frame):
     def __init__(self, master=None):
         super().__init__(master=master)
+        self.createmenu()
+        self.master = master
 
+    def createmenu(self):
         menubar = Menu(self)
         filemenu = Menu(menubar, tearoff=0)
         filemenu.add_command(label="Load JSON", command=self.load_json)
@@ -19,7 +23,8 @@ class GuiTemplate(Frame):
         aboutmenu.add_command(label="Help", command=self.open_help)
         aboutmenu.add_command(label="About", command=self.open_msgAbout)
         menubar.add_cascade(label="?", menu=aboutmenu)
-        master.config(menu=menubar)
+        self.master.config(menu=menubar)
+
 
     def load_json(self):
         pass
@@ -28,10 +33,17 @@ class GuiTemplate(Frame):
         pass
 
     def open_help(self):
+        filepath = ""
+        if sys.platform == 'darwin':
+            open(filepath)
+        else:
+            startfile(filepath)
         pass
 
     def open_msgAbout(self):
-        pass
+        authors="Svenja Rode,\nChris Arends,\nHendrik Gebben,\nMalte Biermann"
+        messagebox.showinfo("Autoren",authors)
+
 
 
 if __name__ == "__main__":
