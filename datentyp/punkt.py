@@ -66,8 +66,14 @@ class Punkt_Dic:
         pId = p.get_id()
         self.__Pdic.update({pId: {"coord":p}})
 
-    def addAttribute2Point(self,pId,a):
-        self.__Pdic.update({pId: a})
+    def getPointCoord(self, pId):
+        return self.__Pdic[pId]["coord"]
+
+    def setAttribute(self,pId,a):
+        self.__Pdic[pId].update(a)
+    
+    def getAttribute(self,pId,a):
+        return self.__Pdic[pId][a]
 
     def einlesenListe(self, liste, sepDec=".",sepVal=";"):
         for l in liste.splitlines():
