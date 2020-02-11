@@ -34,10 +34,11 @@ class Polygonzug():  # Traverse
 
         # r
         for i in range(1, n+1):  # testdata: Standpunkt p1...p6
+            beta = self.__polygon.get_PpointbyNr(i)["beta"].get_w()
             if i == 1:
-                r = self.__polygon.get_PpointbyNr(0)["t_0"].get_w() + self.__polygon.get_PpointbyNr(i)["beta"].get_w() + w_beta_n.get_w() + pi
+                r = self.__polygon.get_PpointbyNr(0)["t_0"].get_w() + beta + w_beta_n.get_w() + pi
             else:
-                r = self.__polygon.get_PpointbyNr(i-1)["r"].get_w() + self.__polygon.get_PpointbyNr(i)["beta"].get_w() + w_beta_n.get_w() + pi
+                r = self.__polygon.get_PpointbyNr(i-1)["r"].get_w() + beta + w_beta_n.get_w() + pi
             if r < (2*pi):
                 r += 2*pi
             elif r > (2*pi):
@@ -49,31 +50,30 @@ class Polygonzug():  # Traverse
         dx_summe = 0
         s_summe = 0
         for i in range(1, n):    # testdata: Standpunkt p1...p4
-            dy = self.__polygon.get_PpointbyNr(i)["s_vor"].länge() * sin(self.__polygon.get_PpointbyNr(i)["r"].get_w())
-            dx = self.__polygon.get_PpointbyNr(i)["s_vor"].länge() * cos(self.__polygon.get_PpointbyNr(i)["r"].get_w())
+            s = self.__polygon.get_PpointbyNr(i)["s_vor"].länge()
+            dy = s * sin(self.__polygon.get_PpointbyNr(i)["r"].get_w())
+            dx = s * cos(self.__polygon.get_PpointbyNr(i)["r"].get_w())
             dy_summe += dy
             dx_summe += dx
-            self.__polygon.update_PpointAttributebyNr(i, {"dy": Strecke.init_länge(dy)})
-            self.__polygon.update_PpointAttributebyNr(i, {"dx": Strecke.init_länge(dx)})
-            s_summe += self.__polygon.get_PpointbyNr(i)["s_vor"].länge()
-        dy_summe = Strecke.init_länge(dy_summe)
-        dx_summe = Strecke.init_länge(dx_summe)
-        s_summe = Strecke.init_länge(s_summe)
+            self.__polygon.update_PpointAttributebyNr(i, {"dy": dy})
+            self.__polygon.update_PpointAttributebyNr(i, {"dx": dx})
+            s_summe += s
 
         # w_y, w_x Koordinatenabschlussverbesserung
-        w_y = (self.__polygon.get_PpointbyNr(-2)["coord"].get_y() - self.__polygon.get_PpointbyNr(1)["coord"].get_y()) - dy_summe.länge()
-        w_x = (self.__polygon.get_PpointbyNr(-2)["coord"].get_x() - self.__polygon.get_PpointbyNr(1)["coord"].get_x()) - dx_summe.länge()
-        w_y_s = Strecke.init_länge(w_y / s_summe.länge())
-        w_x_s = Strecke.init_länge(w_x / s_summe.länge())
+        w_y = (self.__polygon.get_PpointbyNr(-2)["coord"].get_y() - self.__polygon.get_PpointbyNr(1)["coord"].get_y()) - dy_summe
+        w_x = (self.__polygon.get_PpointbyNr(-2)["coord"].get_x() - self.__polygon.get_PpointbyNr(1)["coord"].get_x()) - dx_summe
+        w_y_s = (w_y / s_summe)
+        w_x_s = (w_x / s_summe)
+
         # y,x Koordinaten
         for i in range(1, n-1):  # testdata: Standpunkt p1...p3
             s = self.__polygon.get_PpointbyNr(i)["s_vor"].länge()
-            dy = self.__polygon.get_PpointbyNr(i)["dy"].länge()
-            dx = self.__polygon.get_PpointbyNr(i)["dx"].länge()
-            v_y = Strecke.init_länge(w_y_s.länge() * s)
-            v_x = Strecke.init_länge(w_x_s.länge() * s)
-            y = self.__polygon.get_PpointbyNr(i)["coord"].get_y() + dy + v_y.länge()
-            x = self.__polygon.get_PpointbyNr(i)["coord"].get_x() + dx + v_x.länge()
+            dy = self.__polygon.get_PpointbyNr(i)["dy"]
+            dx = self.__polygon.get_PpointbyNr(i)["dx"]
+            v_y = w_y_s * s
+            v_x = w_x_s * s
+            y = self.__polygon.get_PpointbyNr(i)["coord"].get_y() + dy + v_y
+            x = self.__polygon.get_PpointbyNr(i)["coord"].get_x() + dx + v_x
             self.__polygon.update_PpointAttributebyNr(i+1, {"coord": Punkt(y, x)})
         self.__parameter.update({"w_beta":w_beta, "w_y":w_y, "w_x":w_x})
 
@@ -84,7 +84,6 @@ class Polygonzug():  # Traverse
         for pId in self.__polygon.get_pIdList():
             beta_summe += self.__polygon.get_PpointbyPId(pId)["beta"].get_w()
             s_summe += self.__polygon.get_PpointbyPId(pId)["s_vor"].länge()
-        s_summe = Strecke.init_länge(s_summe)
         w_beta = Winkel((n+2) * pi - beta_summe)
         w_beta_n = Winkel(w_beta.get_w() / n)
 
@@ -100,18 +99,16 @@ class Polygonzug():  # Traverse
             dx = cos(r.get_w()) * self.__polygon.get_PpointbyNr(i)["s_vor"].länge()
             dy_summe += dy
             dx_summe += dx
-            self.__polygon.update_PpointAttributebyNr(i, {"r": r, "dy": Strecke.init_länge(dy), "dx": Strecke.init_länge(dx)})
-        dy_summe = Strecke.init_länge(dy_summe)
-        dx_summe = Strecke.init_länge(dx_summe)
+            self.__polygon.update_PpointAttributebyNr(i, {"r": r, "dy": dy, "dx": dx})
 
-        w_y_s = Strecke.init_länge(- dy_summe.länge() / s_summe.länge())
-        w_x_s = Strecke.init_länge(- dx_summe.länge() / s_summe.länge())
+        w_y_s = - dy_summe / s_summe
+        w_x_s = - dx_summe / s_summe
         for i in range(1,n):    # testdata: Standpunkt p2...p6
             s = self.__polygon.get_PpointbyNr(i-1)["s_vor"].länge()
             r = self.__polygon.get_PpointbyNr(i-1)["r"].get_w()
 
-            dy = self.__polygon.get_PpointbyNr(i-1)["dy"].länge() + w_y_s.länge() * s
-            dx = self.__polygon.get_PpointbyNr(i-1)["dx"].länge() + w_x_s.länge() * s
+            dy = self.__polygon.get_PpointbyNr(i-1)["dy"] + w_y_s * s
+            dx = self.__polygon.get_PpointbyNr(i-1)["dx"] + w_x_s * s
             y = self.__polygon.get_PpointbyNr(i-1)["coord"].get_y()
             x = self.__polygon.get_PpointbyNr(i-1)["coord"].get_x()
             pId = self.__polygon.get_PpointbyNr(i-1)["coord"].get_id()
@@ -145,9 +142,9 @@ class Polygonzug():  # Traverse
                     self.__polygon.update_PpointAttributebyID(sId, a)
                 else:
                     self.__polygon.add_Ppointwithcoords(p, a)
-
             except:
                 pass
+            self.__parameter.update({"w_beta":Winkel(0), "w_y":0, "w_x":0})
 
     def get_polygon(self):
         return self.__polygon
@@ -169,8 +166,7 @@ if __name__ == "__main__":
             if k in ("beta", "t_0", "t_n", "r", "dy", "dx", "coord"):
                 if type(pz_res.get_PpointbyNr(i)[k]).__name__ == "Winkel":
                     print(k, pz_res.get_PpointbyNr(i)[k].get_w("gon"), end="   ")
-                else:
-                    print(k, pz_res.get_PpointbyNr(i)[k], end="   ")
+                else: print(k, pz_res.get_PpointbyNr(i)[k], end="   ")
         print("\r")
 
     rp = Polygonzug()
@@ -181,9 +177,8 @@ if __name__ == "__main__":
     for i in range(n):
         print(rp_res.get_pIdList()[i], end="   ")
         for k in rp_res.get_PpointbyNr(i).keys():
-            if k in ("beta", "t_0", "t_n", "r", "dy", "dx", "coord"):
+            if k in ("beta", "t_0", "t_n", "r", "dP", "dx", "coord"):
                 if type(rp_res.get_PpointbyNr(i)[k]).__name__ == "Winkel":
                     print(k, rp_res.get_PpointbyNr(i)[k].get_w("gon"), end="   ")
-                else:
-                    print(k, rp_res.get_PpointbyNr(i)[k], end="   ")
+                else: print(k, rp_res.get_PpointbyNr(i)[k], end="   ")
         print("\r")
