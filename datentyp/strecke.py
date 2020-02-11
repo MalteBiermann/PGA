@@ -70,8 +70,6 @@ class Strecke:
                     setattr(self, k, v)
 
 
-
-
 if __name__ == "__main__":
 
     p0 = Punkt(0, 0)
@@ -86,4 +84,22 @@ if __name__ == "__main__":
     # s3 = Strecke.init_koor(1.2, 3.4, 5.6, 7.8)
     # print(s1, "\t", s2, "\t", s3)
 
-    #print(json.dumps(s3, default=lambda objekt: objekt.get_json(),sort_keys=True, indent=4))
+    #print(json.dumps(s, default=lambda objekt: objekt.get_json(),sort_keys=True, indent=4))
+
+    jstr = """
+{
+    "p0": {
+        "_Punkt__pId": "",
+        "_Punkt__x": 0,
+        "_Punkt__y": 0
+    },
+    "p1": {
+        "_Punkt__pId": "",
+        "_Punkt__x": 2,
+        "_Punkt__y": 0
+    }
+
+}"""
+    s = Strecke()
+    s.set_json(json.loads(jstr))
+    print(s)
