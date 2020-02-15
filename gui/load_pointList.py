@@ -26,7 +26,7 @@ class Fenster_loadPList(Frame):
 
         lfText = LabelFrame(self, text="Einfügen")
         lfText.grid(row=1, column=0, padx=3, pady=3, columnspan=3, sticky="w")
-        self.tField = Text(lfText,height=50,width=50)
+        self.tField = Text(lfText,height=30,width=50)
         self.tField.grid(row=0, column=0, padx=3, pady=3, sticky="w")
 
         lfRadio = LabelFrame(self, text="System")
