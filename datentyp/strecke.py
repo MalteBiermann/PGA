@@ -55,7 +55,7 @@ class Strecke:
         return self.länge(), Winkel(t, "rad")
 
     def __str__(self):
-        return "Strecke: P0: " + str(self.p0) + " nach P1: " + str(self.p1)
+        return "Strecke von" + str(self.p0) + " nach" + str(self.p1)
 
     def get_json(self):
         return self.__dict__
@@ -68,6 +68,11 @@ class Strecke:
                     objekt.set_json(v)
                 else:
                     setattr(self, k, v)
+
+    # def set_json(self, p_dic):
+    #     for k, v in p_dic.items():
+    #         if(hasattr(self,k)):
+    #             setattr(self, k, v) 
 
 
 if __name__ == "__main__":
@@ -84,22 +89,8 @@ if __name__ == "__main__":
     # s3 = Strecke.init_koor(1.2, 3.4, 5.6, 7.8)
     # print(s1, "\t", s2, "\t", s3)
 
-    #print(json.dumps(s, default=lambda objekt: objekt.get_json(),sort_keys=True, indent=4))
-
-    jstr = """
-{
-    "p0": {
-        "_Punkt__pId": "",
-        "_Punkt__x": 0,
-        "_Punkt__y": 0
-    },
-    "p1": {
-        "_Punkt__pId": "",
-        "_Punkt__x": 2,
-        "_Punkt__y": 0
-    }
-
-}"""
-    s = Strecke()
-    s.set_json(json.loads(jstr))
-    print(s)
+    s_j= json.dumps(s, default=lambda objekt: objekt.get_json(),sort_keys=True, indent=4)
+    print(s_j)
+    sj = Strecke(Punkt(),Punkt())
+    sj.set_json(json.loads(s_j))
+    print(sj)
