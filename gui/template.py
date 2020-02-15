@@ -1,5 +1,5 @@
-from tkinter import Frame, Tk, Button, Toplevel, Menu, messagebox
-from os import startfile,open
+from tkinter import Frame, Tk, Button, Toplevel, Menu, messagebox, filedialog
+from os import startfile
 
 if __name__ == "__main__":
     import sys
@@ -15,8 +15,8 @@ class GuiTemplate(Frame):
     def createmenu(self):
         menubar = Menu(self)
         filemenu = Menu(menubar, tearoff=0)
-        filemenu.add_command(label="Load JSON", command=self.load_json)
-        filemenu.add_command(label="Save JSON", command=self.save_json)
+        filemenu.add_command(label="Load JSON", command=self.open_loadJson)
+        filemenu.add_command(label="Save JSON", command=self.open_saveJson)
         menubar.add_cascade(label="File", menu=filemenu)
 
         aboutmenu = Menu(menubar, tearoff=0)
@@ -26,11 +26,25 @@ class GuiTemplate(Frame):
         self.master.config(menu=menubar)
 
 
-    def load_json(self):
+    def open_loadJson(self):
+        filepath = filedialog.askopenfilename(filetypes =[('JSON', '*.json'),('*', '*.*')])
+        if filepath is not None:
+            with open(filepath, 'r') as fh:
+                s = fh.read()
+            self.load_json(s)
+
+    def load_json(self,s=""):
         pass
 
+    def open_saveJson(self):
+        j_s = self.save_json()
+        filepath = filedialog.asksaveasfilename(filetypes=[("JSON","*.json")], defaultextension=[("JSON","*.json")])
+        if filepath is not None:
+            with open(filepath,'w') as fh:
+                fh.writelines(j_s)
+    
     def save_json(self):
-        pass
+        return ""
 
     def open_help(self):
         filepath = ""
@@ -38,7 +52,6 @@ class GuiTemplate(Frame):
             open(filepath)
         else:
             startfile(filepath)
-        pass
 
     def open_msgAbout(self):
         authors="Svenja Rode,\nChris Arends,\nHendrik Gebben,\nMalte Biermann"

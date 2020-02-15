@@ -1,4 +1,5 @@
-from tkinter import Frame,Tk,Button,Toplevel,Entry,Label,StringVar
+from tkinter import Frame,Tk,Button,Toplevel,Entry,Label,StringVar,filedialog
+import json
 
 if __name__ == "__main__":
     import sys
@@ -49,6 +50,23 @@ class FensterWinkelrechner(GuiTemplate):
         self.strEntryRad.set(w.get_w(einheit="rad"))
         self.strEntryGrad.set(w.get_w(einheit="grad"))
 
+    def save_json(self):
+        str_wRad =  Winkel(float(self.strEntryRad.get().replace(",", ".")),einheit="rad").get_json()
+        str_wGon =  Winkel(float(self.strEntryGon.get().replace(",", ".")),einheit="gon").get_json()
+        str_wGrad =  Winkel(float(self.strEntryGrad.get().replace(",", ".")),einheit="grad").get_json()
+        return json.dumps({"rad":str_wRad, "gon":str_wGon, "grad":str_wGrad})
+
+    def load_json(self,s):
+            dic_j = json.loads(s)
+            wgrad = Winkel()
+            wrad = Winkel()
+            wgon = Winkel()
+            wgrad.set_json(dic_j["grad"])
+            wrad.set_json(dic_j["rad"])
+            wgon.set_json(dic_j["gon"])
+            self.strEntryGrad.set(wgrad.get_w("grad")) 
+            self.strEntryRad.set(wrad.get_w("rad")) 
+            self.strEntryGon.set(wgon.get_w("gon")) 
 
 if __name__ == "__main__":
     root = Tk()
