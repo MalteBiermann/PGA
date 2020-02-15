@@ -40,7 +40,7 @@ class Punkt:
                 setattr(self, k, v) 
 
     def __str__(self):
-        return str(self.get_y()) + "|" + str(self.get_x())
+        return self.get_id() + ": " + str(self.get_y()) + "|" + str(self.get_x())
 
     def ersteHA(self, p12_s, p12_t):
         y2 = self.__y + (p12_s.länge() * sin(p12_t.get_w()))
@@ -104,6 +104,10 @@ if __name__ == "__main__":
     result_p2 = p1.ersteHA(p12_s, p12_t)
     print("P1:", p1, "Strecke:", s, "Winkel:", p12_t, "P1:", result_p2)
 
-    print(json.dumps(p1, default=lambda objekt: objekt.get_json(),sort_keys=True, indent=4))
+    jp = json.dumps(p1, default=lambda objekt: objekt.get_json(),sort_keys=True, indent=4)
+    print(jp)
+    pj = Punkt()
+    pj.set_json(json.loads(jp))
+    print(pj)
 
 
