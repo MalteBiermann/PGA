@@ -2,7 +2,7 @@ from math import pi
 
 
 class Winkel:
-    def __init__(self, w, einheit="rad"):
+    def __init__(self, w=0, einheit="rad"):
         if einheit == "gon":
             self.__w = self.gon2rad(w)
         elif einheit == "grad":
@@ -46,6 +46,14 @@ class Winkel:
     def neg2pos(self):
         if self.__w < 0:
             self.__w += 2*pi
+
+    def get_json(self):
+        return self.__dict__
+
+    def set_json(self, p_dic):
+        for k, v in p_dic.items():
+            if(hasattr(self,k)):
+                setattr(self, k, v) 
 
 
 if __name__ == "__main__":
