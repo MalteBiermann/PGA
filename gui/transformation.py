@@ -1,5 +1,6 @@
 from tkinter import Frame,Tk,Button,Toplevel,LabelFrame,Label,Entry,StringVar,Radiobutton,IntVar,DoubleVar,Scrollbar
 from tkinter.ttk import Treeview
+import json
 
 if __name__ == "__main__":
     import sys
@@ -9,8 +10,10 @@ from operation.helmerttransformation import HelmertTrans
 from operation.affintransformation import AffinTrans
 from datentyp.punkt import Punkt_Dic
 from gui.load_pointList import Fenster_loadPList
+from gui.template import GuiTemplate
+from datentyp.strecke import Strecke
 
-class FensterTrans(Frame):
+class FensterTrans(GuiTemplate):
     def __init__(self, master):
         super().__init__(master)
         self.grid()
@@ -168,8 +171,29 @@ class FensterTrans(Frame):
         else:
             punkte, parameter = AffinTrans(self.__dict_PLQuelle, self.__dict_PLZiel, l_p1exclude).get_result()
         self.showPoints(2, punkte)
-        self.__dict_PLTrans.set_dic(punkte)
+        self.__dict_PLTrans = punkte
         self.showParam(parameter)
+
+    def load_json(self,s):
+        pDic = json.loads(s)
+        for k,v in pDic.items():
+            j = json.loads(v)
+            if k == "source":
+                self.__dict_PLQuelle.from_jsonTrans(j)
+            elif k == "dest":
+                self.__dict_PLZiel.from_jsonTrans(j)
+            elif k == "trans":
+                self.__dict_PLTrans.from_jsonTrans(j)
+        
+        self.showPoints(0, self.__dict_PLQuelle)
+        self.showPoints(1, self.__dict_PLZiel)
+        self.showPoints(2, self.__dict_PLTrans)
+
+    def save_json(self):
+        pDicSource_j = json.dumps((self.__dict_PLQuelle), default=lambda objekt: objekt.get_json(),sort_keys=True, indent=4)
+        pDicDest_j = json.dumps((self.__dict_PLZiel), default=lambda objekt: objekt.get_json(),sort_keys=True, indent=4)
+        pDicTrans_j = json.dumps((self.__dict_PLTrans), default=lambda objekt: objekt.get_json(),sort_keys=True, indent=4)
+        return json.dumps({"source":pDicSource_j, "dest":pDicDest_j, "trans":pDicTrans_j})
 
 
 if __name__ == "__main__":
