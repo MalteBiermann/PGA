@@ -69,3 +69,6 @@ venv.bak/
 
 # mkdocs documentation
 /site
+
+
+data_io/
