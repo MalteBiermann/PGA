@@ -69,6 +69,13 @@ class Strecke:
                 else:
                     setattr(self, k, v)
 
+    @classmethod
+    def init_jsonKoor(cls, d):
+        p0 = Punkt.init_json(d["p0"])
+        p1 = Punkt.init_json(d["p1"])
+        return cls(p0,p1)
+
+
 
 if __name__ == "__main__":
 

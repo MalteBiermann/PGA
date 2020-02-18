@@ -10,8 +10,8 @@ from operation.transformation import Transformation
 
 
 class AffinTrans(Transformation):
-    def __init__(self, d_p0, d_p1, l_p1exclude=None):
-        super().__init__(d_p0, d_p1, l_p1exclude=None)
+    def __init__(self, d_p0, d_p1, l_p1exclude):
+        super().__init__(d_p0, d_p1, l_p1exclude)
 
         xX = yX = xy = xY = yY = yy = xx = 0
         for k in self._l_p_ident:
@@ -94,7 +94,7 @@ if __name__ == "__main__":
     dict_PLQuelle.einlesenDatei("testdata/helmert_source.csv", sepDec=".", sepVal=";")
     dict_PLZiel.einlesenDatei("testdata/helmert_destination.csv", sepDec=".", sepVal=";")
 
-    punkte,parameter = AffinTrans(dict_PLQuelle, dict_PLZiel).get_result()
+    punkte,parameter = AffinTrans(dict_PLQuelle, dict_PLZiel, None).get_result()
 
     punkte = punkte.get_dic()
     for k,v in punkte.items():
