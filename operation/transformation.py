@@ -58,3 +58,5 @@ class Transformation:
             Y_red = self._dicP1[k]["coord"].get_y() - self._P1_cog.get_y()
             X_red = self._dicP1[k]["coord"].get_x() - self._P1_cog.get_x()
             self._PDic1_reduced.update({k: Punkt(Y_red, X_red)})
+
+    

@@ -1,3 +1,5 @@
+import json
+
 if __name__ == "__main__":
     import sys
     sys.path.append(".")
@@ -46,6 +48,23 @@ class Polygon:
     
     def get_pDic(self):
         return self.__PDic.get_dic()
+
+    def get_json(self):
+        pDic_j = json.dumps(self.__PDic.get_json(), default=lambda objekt: objekt.get_json(), sort_keys=True, indent=4)
+        pIdL_j = json.dumps(self.__pIdList)
+        return {"pDic": pDic_j, "pIdL":pIdL_j}
+
+    def set_json(self,s):
+        p_j = json.loads(s)
+        pIdL = p_j["pIdL"]
+        pDic = p_j["pDic"]
+        self.__PDic.from_jsonTrans(json.loads(pDic))
+        self.__pIdList = json.loads(pIdL)
+
+    def clean(self):
+        self.__pIdList.clear()
+        self.__PDic.clear()
+
 
 
 if __name__ == "__main__":

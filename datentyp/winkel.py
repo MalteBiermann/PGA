@@ -54,7 +54,10 @@ class Winkel:
         for k, v in p_dic.items():
             if(hasattr(self,k)):
                 setattr(self, k, v) 
-
+    
+    @classmethod
+    def init_json(cls,d):
+        return cls(d['_Winkel__w'])
 
 if __name__ == "__main__":
     w0 = Winkel(90, "grad")
