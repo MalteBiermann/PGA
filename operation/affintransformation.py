@@ -56,8 +56,8 @@ class AffinTrans(Transformation):
             if k in self._l_p_ident:
                 wy = - Y0 - a3*self._dicP0[k]["coord"].get_y() - a4*self._dicP0[k]["coord"].get_x() + self._dicP1[k]["coord"].get_y()
                 wx = - X0 - a1*self._dicP0[k]["coord"].get_x() + a2*self._dicP0[k]["coord"].get_y() + self._dicP1[k]["coord"].get_x()
-                w = {"y":Strecke.init_länge(wy), "x":Strecke.init_länge(wx)}
-                dicPTrans[k].update({"w":w})
+                #w = {"y":Strecke.init_länge(wy), "x":Strecke.init_länge(wx)}
+                dicPTrans[k].update({"w":Punkt(wy,wx,"w")})
         
         self._dicP2.set_dic(dicPTrans)
 
@@ -99,7 +99,7 @@ if __name__ == "__main__":
     punkte = punkte.get_dic()
     for k,v in punkte.items():
         if "w" in v.keys():
-            print(k,v["coord"], "RK:", v["w"]["y"].länge(), v["w"]["x"].länge())
+            print(k,v["coord"], "RK:", v["w"].get_y(),v["w"].get_x())
         else:
             print(k,v["coord"])
     print(parameter)

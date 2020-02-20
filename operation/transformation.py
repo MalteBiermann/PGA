@@ -6,7 +6,7 @@ if __name__ == "__main__":
     sys.path.append(".")
 
 from datentyp.punkt import Punkt,Punkt_Dic
-from datentyp.strecke import Strecke
+
 
 class Transformation:
     def __init__(self, d_p0, d_p1, l_p1exclude=None):

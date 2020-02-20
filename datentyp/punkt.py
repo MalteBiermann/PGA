@@ -118,13 +118,13 @@ class Punkt_Dic:
                         c = {"coord": Punkt.init_json(v2)}
                         pd[k1].update(c)
                     elif k2 == "w":
-                        pd[k1].update({"w":{}})
-                        for k3, v3 in v2.items():
-                            if k3 == "y":
-                                c = {"y": Strecke.init_jsonKoor(v3)}
-                            elif k3 == "x":
-                                c = {"x": Strecke.init_jsonKoor(v3)}
-                            pd[k1]["w"].update(c)
+                        pd[k1].update({"w":Punkt.init_json(v2)})
+                        # for k3, v3 in v2.items():
+                        #     if k3 == "y":
+                        #         c = {"y": Strecke.init_jsonKoor(v3)}
+                        #     elif k3 == "x":
+                        #         c = {"x": Strecke.init_jsonKoor(v3)}
+                        #     pd[k1]["w"].update(c)
                     elif k2 == "beta":
                         pd[k1].update({"beta":Winkel.init_json(v2)})
                     elif k2 == "r":
