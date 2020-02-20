@@ -1,4 +1,5 @@
 from math import pi, sin, cos
+import json
 
 if __name__ == "__main__":
     import sys
@@ -151,6 +152,17 @@ class Polygonzug():  # Traverse
     
     def get_parameter(self):
         return self.__parameter
+
+    def get_json(self):
+        return json.dumps(self.__polygon.get_json(), sort_keys=True, indent=4)
+
+    def set_polygon_json(self,s):
+        self.__polygon.set_json(s)
+
+    def clean(self):
+        self.__polygon.clean()
+        self.__parameter.clear()
+
 
 
 if __name__ == "__main__":

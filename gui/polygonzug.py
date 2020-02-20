@@ -1,5 +1,6 @@
 from tkinter import Frame, Tk, Button, Toplevel, Radiobutton, IntVar, StringVar, DoubleVar, LabelFrame, Entry, Label, Scrollbar, filedialog
 from tkinter.ttk import Treeview
+import json
 
 if __name__ == "__main__":
     import sys
@@ -15,6 +16,7 @@ class FensterPZ(GuiTemplate):
         super().__init__(master)
         self.grid()
 
+        self.__polygonzug = Polygonzug()
         tv_column_width_id = 40
         tv_column_width = 120
         tv_column_width_min = 100
@@ -107,6 +109,7 @@ class FensterPZ(GuiTemplate):
         else:
             self.__polygonzug.berechneRingpolygon()
         self.showPoints()
+        self.showParameter()
 
     def BtnPressedLoadPoints(self):
         try:
@@ -115,7 +118,7 @@ class FensterPZ(GuiTemplate):
         except:
             pass
         if filePath:
-            self.__polygonzug = Polygonzug()
+            self.__polygonzug.clean()
             self.__polygonzug.readFile(
                 filePath, self.str_sepDec.get(), self.str_sepVal.get())
             self.showPoints()
@@ -144,15 +147,28 @@ class FensterPZ(GuiTemplate):
             y = dic_Polygon[pId]["coord"].get_y()
             x = dic_Polygon[pId]["coord"].get_x()
             self.tv_points.insert("", i+1, text=pId, values=(beta, t, s, y, x))
+        
+    def showParameter(self):    
         self.dbl_Wbeta.set(self.__polygonzug.get_parameter()
                            ["w_beta"].get_w("gon"))
-
         self.dbl_Wx.set(self.__polygonzug.get_parameter()["w_x"])
         self.dbl_Wy.set(self.__polygonzug.get_parameter()["w_y"])
 
+    def clearParameter(self):
+        for e in (self.dbl_Wbeta, self.dbl_Wx, self.dbl_Wy):
+            e.set("")
+
+    def save_json(self):
+        return self.__polygonzug.get_json()
+
+    def load_json(self, s):
+        self.__polygonzug.clean()
+        self.clearParameter()
+        self.__polygonzug.set_polygon_json(s)
+
+        self.showPoints()
 
 if __name__ == "__main__":
-    pass
     root = Tk()
     root.title("Polygonzug")
     root.geometry
