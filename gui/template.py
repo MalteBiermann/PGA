@@ -1,10 +1,10 @@
-from tkinter import Frame, Tk, Button, Toplevel, Menu, messagebox, filedialog
+from tkinter import Frame, Tk, Button, Toplevel, Menu, messagebox, filedialog, Label
 from os import startfile
+import webbrowser
 
 if __name__ == "__main__":
     import sys
     sys.path.append(".")
-
 
 class GuiTemplate(Frame):
     def __init__(self, master=None):
@@ -12,11 +12,18 @@ class GuiTemplate(Frame):
         self.createmenu()
         self.master = master
 
+
     def createmenu(self):
         menubar = Menu(self)
         filemenu = Menu(menubar, tearoff=0)
-        filemenu.add_command(label="Load JSON", command=self.open_loadJson)
-        filemenu.add_command(label="Save JSON", command=self.open_saveJson)
+        
+        classlist = ("FensterTrans", "FensterPZ")
+        if self.get_class_name(self) in classlist:
+            filemenu.add_command(label="Load JSON", command=self.open_loadJson)
+            filemenu.add_command(label="Save JSON", command=self.open_saveJson)
+        else:
+            filemenu.add_command(label="Load JSON", command=self.open_loadJson, state="disabled")
+            filemenu.add_command(label="Save JSON", command=self.open_saveJson, state="disabled")
         menubar.add_cascade(label="File", menu=filemenu)
 
         aboutmenu = Menu(menubar, tearoff=0)
@@ -24,7 +31,9 @@ class GuiTemplate(Frame):
         aboutmenu.add_command(label="About", command=self.open_msgAbout)
         menubar.add_cascade(label="?", menu=aboutmenu)
         self.master.config(menu=menubar)
-
+    
+    def get_class_name(self, instance):
+        return instance.__class__.__name__
 
     def open_loadJson(self):
         filepath = filedialog.askopenfilename(filetypes =[('JSON', '*.json'),('*', '*.*')])
@@ -54,9 +63,8 @@ class GuiTemplate(Frame):
             startfile(filepath)
 
     def open_msgAbout(self):
-        authors="Svenja Rode,\nChris Arends,\nHendrik Gebben,\nMalte Biermann"
+        authors = "Svenja Rode,\nChris Arends,\nHendrik Gebben,\nMalte Biermann\n\n https://github.com/MalteBiermann/PGA"
         messagebox.showinfo("Autoren",authors)
-
 
 
 if __name__ == "__main__":
