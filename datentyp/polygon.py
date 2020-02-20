@@ -58,7 +58,7 @@ class Polygon:
         p_j = json.loads(s)
         pIdL = p_j["pIdL"]
         pDic = p_j["pDic"]
-        self.__PDic.from_jsonTrans(json.loads(pDic))
+        self.__PDic.from_json(json.loads(pDic))
         self.__pIdList = json.loads(pIdL)
 
     def clean(self):

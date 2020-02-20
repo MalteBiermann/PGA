@@ -179,20 +179,20 @@ class FensterTrans(GuiTemplate):
         for k,v in pDic.items():
             j = json.loads(v)
             if k == "source":
-                self.__dict_PLQuelle.from_jsonTrans(j)
+                self.__dict_PLQuelle.from_json(j)
             elif k == "dest":
-                self.__dict_PLZiel.from_jsonTrans(j)
+                self.__dict_PLZiel.from_json(j)
             elif k == "trans":
-                self.__dict_PLTrans.from_jsonTrans(j)
+                self.__dict_PLTrans.from_json(j)
         
         self.showPoints(0, self.__dict_PLQuelle)
         self.showPoints(1, self.__dict_PLZiel)
         self.showPoints(2, self.__dict_PLTrans)
 
     def save_json(self):
-        pDicSource_j = json.dumps((self.__dict_PLQuelle), default=lambda objekt: objekt.get_json(),sort_keys=True, indent=4)
-        pDicDest_j = json.dumps((self.__dict_PLZiel), default=lambda objekt: objekt.get_json(),sort_keys=True, indent=4)
-        pDicTrans_j = json.dumps((self.__dict_PLTrans), default=lambda objekt: objekt.get_json(),sort_keys=True, indent=4)
+        pDicSource_j = json.dumps((self.__dict_PLQuelle.get_json()), default=lambda objekt: objekt.get_json(),sort_keys=True, indent=4)
+        pDicDest_j = json.dumps((self.__dict_PLZiel.get_json()), default=lambda objekt: objekt.get_json(),sort_keys=True, indent=4)
+        pDicTrans_j = json.dumps((self.__dict_PLTrans.get_json()), default=lambda objekt: objekt.get_json(),sort_keys=True, indent=4)
         return json.dumps({"source":pDicSource_j, "dest":pDicDest_j, "trans":pDicTrans_j})
 
 
