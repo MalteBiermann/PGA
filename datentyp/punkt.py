@@ -6,6 +6,7 @@ if __name__ == "__main__":
     import sys
     sys.path.append(".")
 
+from datentyp.winkel import Winkel
 
 class Punkt:
     def __init__(self, p_y=0, p_x=0, pId=""):
@@ -106,10 +107,10 @@ class Punkt_Dic:
                 else:
                     setattr(self, k, v)
 
-    def from_jsonTrans(self, d):
+    def from_json(self, d):
         from datentyp.strecke import Strecke
         pd = {}
-        for k, v in d.items():
+        for v in d.values():
             for k1, v1 in v.items():
                 pd.update({k1:{}})
                 for k2, v2 in v1.items():
@@ -124,6 +125,13 @@ class Punkt_Dic:
                             elif k3 == "x":
                                 c = {"x": Strecke.init_jsonKoor(v3)}
                             pd[k1]["w"].update(c)
+                    elif k2 == "beta":
+                        pd[k1].update({"beta":Winkel.init_json(v2)})
+                    elif k2 == "r":
+                        pd[k1].update({"r":Winkel.init_json(v2)})
+                    elif k2 == "s_vor":
+                        pd[k1].update({"s_vor":Strecke.init_jsonKoor(v2)})
+
         self.set_dic(pd)
 
 
@@ -151,7 +159,7 @@ if __name__ == "__main__":
     print(j_pd)
 
     pd_j = Punkt_Dic()
-    pd_j.from_jsonTrans(json.loads(j_pd))
+    pd_j.from_json(json.loads(j_pd))
     print(pd_j)
 
 
