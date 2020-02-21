@@ -1,6 +1,9 @@
 from tkinter import Frame,Tk,Button,Toplevel,LabelFrame,Label,Entry,StringVar,Radiobutton,IntVar,DoubleVar,Scrollbar
 from tkinter.ttk import Treeview
 import json
+from matplotlib import pyplot as plt
+from matplotlib import use
+use('TkAgg')
 
 if __name__ == "__main__":
     import sys
@@ -11,7 +14,8 @@ from operation.affintransformation import AffinTrans
 from datentyp.punkt import Punkt_Dic
 from gui.load_pointList import Fenster_loadPList
 from gui.template import GuiTemplate
-from datentyp.strecke import Strecke
+from datentyp.winkel import Winkel
+
 
 class FensterTrans(GuiTemplate):
     def __init__(self, master):
@@ -40,17 +44,18 @@ class FensterTrans(GuiTemplate):
         lfTransType.grid(row=0, column=0, padx=3, pady=3, sticky="w")
         lfSource = LabelFrame(self, text="Quellsystem")
         lfSource.grid(row=1, column=0, padx=3, pady=3, sticky="w", columnspan=2)
-        lfDest = LabelFrame(self, text="Zielsystem (Markierung = Nichtbeachtung des Passpunktes)")
-        lfDest.grid(row=1, column=2, padx=3, pady=3, sticky="w", columnspan=2)
+        lfDest = LabelFrame(self, text="Zielsystem (Markierung: Nichtbeachtung des Passpunktes bei der Transformation)")
+        lfDest.grid(row=1, column=3, padx=3, pady=3, sticky="w", columnspan=2)
         lfParameter = LabelFrame(self, text="Parameter")
-        lfParameter.grid(row=2, column=1, padx=3, pady=3, sticky="", columnspan=3)
+        lfParameter.grid(row=2, column=2, padx=3, pady=3, sticky="", columnspan=3)
         lfTrans = LabelFrame(self, text="Zielsystem / transformiert")
         lfTrans.grid(row=4, column=0, padx=3, pady=3, sticky="",columnspan=4)
 
         Radiobutton(lfTransType,text="Helmerttransformation", variable=self.radioTrans, value=0).grid(row=0, column=0, padx=3, pady=3)
         Radiobutton(lfTransType,text="Affintransformation", variable=self.radioTrans, value=1).grid(row=0, column=1, padx=3, pady=3)
         Button(self,text="Lade Punkte",command=self.BtnPressedLoadPoints).grid(row=0, column=1, padx=3, pady=3, sticky="w")
-        Button(self,text="Berechnen",command=self.BtnPressedCalc).grid(row=2, column=0, padx=3, pady=3, columnspan=1)
+        Button(self,text="Berechnen",command=self.BtnPressedCalc).grid(row=2, column=0, padx=3, pady=3, columnspan=1,sticky="e")
+        Button(self,text="Zeige Grafik",command=self.BtnPressedPlot).grid(row=2, column=1, padx=3, pady=3, columnspan=1,sticky="w")
 
         self.punktListSource = Treeview(lfSource,selectmode="none")
         self.punktListSource.grid(row=0, column=0, padx=3, pady=3)
@@ -78,19 +83,19 @@ class FensterTrans(GuiTemplate):
         self.punktListDestScroll.grid(row=0, column=1, sticky="nse")
         self.punktListDest.configure(yscrollcommand=self.punktListDestScroll.set)
 
-        Label(lfParameter,text="Maßstab Y").grid(row=0, column=0, padx=3, pady=3)
-        Label(lfParameter,text="Maßstab X").grid(row=1, column=0, padx=3, pady=3)
-        Label(lfParameter,text="Rotation Y").grid(row=0, column=2, padx=3, pady=3)
-        Label(lfParameter,text="Rotation X").grid(row=1, column=2, padx=3, pady=3)
-        Label(lfParameter,text="Translation Y").grid(row=0, column=4, padx=3, pady=3)
-        Label(lfParameter,text="Translation X").grid(row=1, column=4, padx=3, pady=3)
+        Label(lfParameter,text="Maßstab Y").grid(row=0, column=0, padx=3, pady=3, sticky="w")
+        Label(lfParameter,text="Maßstab X").grid(row=0, column=3, padx=3, pady=3, sticky="e")
+        Label(lfParameter,text="Rotation Y / gon").grid(row=1, column=0, padx=3, pady=3, sticky="w")
+        Label(lfParameter,text="Rotation X / gon").grid(row=1, column=3, padx=3, pady=3, sticky="e")
+        Label(lfParameter,text="Translation Y").grid(row=2, column=0, padx=3, pady=3, sticky="w")
+        Label(lfParameter,text="Translation X").grid(row=2, column=3, padx=3, pady=3, sticky="e")
 
         Entry(lfParameter,textvariable=self.dblParaM_Y,state="readonly").grid(row=0, column=1, padx=3, pady=3)
-        Entry(lfParameter,textvariable=self.dblParaM_X,state="readonly").grid(row=1, column=1, padx=3, pady=3)
-        Entry(lfParameter,textvariable=self.dblParaRot_Y,state="readonly").grid(row=0, column=3, padx=3, pady=3)
-        Entry(lfParameter,textvariable=self.dblParaRot_X,state="readonly").grid(row=1, column=3, padx=3, pady=3)
-        Entry(lfParameter,textvariable=self.dblParaTrans_Y,state="readonly").grid(row=0, column=5, padx=3, pady=3)
-        Entry(lfParameter,textvariable=self.dblParaTrans_X,state="readonly").grid(row=1, column=5, padx=3, pady=3)
+        Entry(lfParameter,textvariable=self.dblParaM_X,state="readonly").grid(row=0, column=2, padx=3, pady=3)
+        Entry(lfParameter,textvariable=self.dblParaRot_Y,state="readonly").grid(row=1, column=1, padx=3, pady=3)
+        Entry(lfParameter,textvariable=self.dblParaRot_X,state="readonly").grid(row=1, column=2, padx=3, pady=3)
+        Entry(lfParameter,textvariable=self.dblParaTrans_Y,state="readonly").grid(row=2, column=1, padx=3, pady=3)
+        Entry(lfParameter,textvariable=self.dblParaTrans_X,state="readonly").grid(row=2, column=2, padx=3, pady=3)
 
         self.punktListTrans = Treeview(lfTrans,selectmode="none")
         self.punktListTrans.grid(row=0, column=0, padx=3, pady=3)
@@ -129,15 +134,15 @@ class FensterTrans(GuiTemplate):
 
     def showParam(self,parameter):
         self.dblParaM_Y.set(parameter["m_Y"])
-        self.dblParaRot_Y.set(parameter["rot_Y"])
+        self.dblParaRot_Y.set(Winkel(parameter["rot_Y"],"rad").get_w("gon"))
         self.dblParaTrans_Y.set(parameter["Y0"])
         self.dblParaTrans_X.set(parameter["X0"])
         if "m_X" in parameter:
             self.dblParaM_X.set(parameter["m_X"])
-            self.dblParaRot_X.set(parameter["rot_X"])
+            self.dblParaRot_X.set(Winkel(parameter["rot_X"],"rad").get_w("gon"))
         else:
             self.dblParaM_X.set(parameter["m_Y"])
-            self.dblParaRot_X.set(parameter["rot_Y"])
+            self.dblParaRot_X.set(Winkel(parameter["rot_Y"],"rad").get_w("gon"))
 
     def fillTree(self, treename, dicP):
         for row in treename.get_children():
@@ -149,7 +154,7 @@ class FensterTrans(GuiTemplate):
                 pId = keys[i]
                 if "w" in dP[pId]:
                     treename.insert("",i+1,text=pId, values=(dP[pId]["coord"].get_y(), dP[pId]["coord"].get_x(), \
-                        dP[pId]["w"]["y"].länge(), dP[pId]["w"]["x"].länge() ))
+                        dP[pId]["w"].get_y(), dP[pId]["w"].get_x()))
                 else:
                     treename.insert("",i+1,text=pId, values=(dP[pId]["coord"].get_y(), dP[pId]["coord"].get_x()))
         else:
@@ -194,6 +199,39 @@ class FensterTrans(GuiTemplate):
         pDicDest_j = json.dumps((self.__dict_PLZiel.get_json()), default=lambda objekt: objekt.get_json(),sort_keys=True, indent=4)
         pDicTrans_j = json.dumps((self.__dict_PLTrans.get_json()), default=lambda objekt: objekt.get_json(),sort_keys=True, indent=4)
         return json.dumps({"source":pDicSource_j, "dest":pDicDest_j, "trans":pDicTrans_j})
+
+    def BtnPressedPlot(self):
+        fig = plt.figure()
+        ax = fig.add_subplot()
+        ax.set_aspect("equal")
+
+        pl_plot = []
+        for k in self.__dict_PLTrans.get_dic().values():
+            pl_plot.append(k)
+        
+        l_y = []
+        l_x = []
+        l_id = []
+        for p in pl_plot:
+            l_y.append(p["coord"].get_y())
+            l_x.append(p["coord"].get_x())
+            l_id.append(p["coord"].get_id())
+
+        for i in range(len(l_y)):
+            ax.text(l_y[i]+10, l_x[i]+10, l_id[i])
+
+        plt.plot(l_y,l_x, '.', color='black')
+
+
+        #ax.relim()
+        ax.autoscale_view()
+        ax.set_xlabel("Y")
+        ax.set_ylabel("X")
+        ax.grid(True)
+        plt.show()
+
+
+
 
 
 if __name__ == "__main__":
