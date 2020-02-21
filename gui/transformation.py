@@ -25,142 +25,147 @@ class FensterTrans(GuiTemplate):
         tv_column_width_id = 50
         tv_column_width = 200
         tv_column_width_min = 200
-        self.__dict_PLQuelle = Punkt_Dic()
-        self.__dict_PLZiel = Punkt_Dic()
-        self.__dict_PLTrans = Punkt_Dic()
+        self.__pd_PLQuelle = Punkt_Dic()
+        self.__pd_PLZiel = Punkt_Dic()
+        self.__pd_PLTrans = Punkt_Dic()
 
-        self.filePathSource = StringVar()
-        self.filePathDest = StringVar()
-        self.radioTrans = IntVar(value=0)
+        self.__dict_para = {}
 
-        self.dblParaM_Y = DoubleVar()
-        self.dblParaM_X = DoubleVar()
-        self.dblParaRot_Y = DoubleVar()
-        self.dblParaRot_X = DoubleVar()
-        self.dblParaTrans_Y = DoubleVar()
-        self.dblParaTrans_X = DoubleVar()
+        self.str_filePathSource = StringVar()
+        self.str_filePathDest = StringVar()
+        self.int_radioTrans = IntVar(value=0)
 
-        lfTransType = LabelFrame(self, text="Ebene Transformationen")
-        lfTransType.grid(row=0, column=0, padx=3, pady=3, sticky="w")
-        lfSource = LabelFrame(self, text="Quellsystem")
-        lfSource.grid(row=1, column=0, padx=3, pady=3, sticky="w", columnspan=2)
-        lfDest = LabelFrame(self, text="Zielsystem (Markierung: Nichtbeachtung des Passpunktes bei der Transformation)")
-        lfDest.grid(row=1, column=3, padx=3, pady=3, sticky="w", columnspan=2)
-        lfParameter = LabelFrame(self, text="Parameter")
-        lfParameter.grid(row=2, column=2, padx=3, pady=3, sticky="", columnspan=3)
-        lfTrans = LabelFrame(self, text="Zielsystem / transformiert")
-        lfTrans.grid(row=4, column=0, padx=3, pady=3, sticky="",columnspan=4)
+        self.dbl_ParaMY = DoubleVar()
+        self.dbl_ParaMX = DoubleVar()
+        self.dbl_ParaRotY = DoubleVar()
+        self.dbl_ParaRotX = DoubleVar()
+        self.dbl_ParaTransY = DoubleVar()
+        self.dbl_ParaTransX = DoubleVar()
 
-        Radiobutton(lfTransType,text="Helmerttransformation", variable=self.radioTrans, value=0).grid(row=0, column=0, padx=3, pady=3)
-        Radiobutton(lfTransType,text="Affintransformation", variable=self.radioTrans, value=1).grid(row=0, column=1, padx=3, pady=3)
-        Button(self,text="Lade Punkte",command=self.BtnPressedLoadPoints).grid(row=0, column=1, padx=3, pady=3, sticky="w")
-        Button(self,text="Berechnen",command=self.BtnPressedCalc).grid(row=2, column=0, padx=3, pady=3, columnspan=1,sticky="e")
-        Button(self,text="Zeige Grafik",command=self.BtnPressedPlot).grid(row=2, column=1, padx=3, pady=3, columnspan=1,sticky="w")
+        lf_transType = LabelFrame(self, text="Ebene Transformationen")
+        lf_transType.grid(row=0, column=0, padx=3, pady=3, sticky="w")
+        lf_Source = LabelFrame(self, text="Quellsystem")
+        lf_Source.grid(row=1, column=0, padx=3, pady=3, sticky="w", columnspan=2)
+        lf_Dest = LabelFrame(self, text="Zielsystem (Markierung: Nichtbeachtung des Passpunktes bei der Transformation)")
+        lf_Dest.grid(row=1, column=3, padx=3, pady=3, sticky="w", columnspan=2)
+        lf_Parameter = LabelFrame(self, text="Parameter")
+        lf_Parameter.grid(row=2, column=2, padx=3, pady=3, sticky="", columnspan=3)
+        lf_Trans = LabelFrame(self, text="Zielsystem / transformiert")
+        lf_Trans.grid(row=4, column=0, padx=3, pady=3, sticky="",columnspan=4)
 
-        self.punktListSource = Treeview(lfSource,selectmode="none")
-        self.punktListSource.grid(row=0, column=0, padx=3, pady=3)
-        self.punktListSource["columns"] = ("y", "x")
-        self.punktListSource.column("#0",width = tv_column_width_id, minwidth=tv_column_width_id)
-        self.punktListSource.column("y",width = tv_column_width, minwidth=tv_column_width_min)
-        self.punktListSource.column("x",width = tv_column_width, minwidth=tv_column_width_min)
-        self.punktListSource.heading("#0",text="id")
-        self.punktListSource.heading("y",text="y")
-        self.punktListSource.heading("x",text="x")
-        self.punktListSourceScroll = Scrollbar(lfSource,orient="vertical", command=self.punktListSource.yview)
-        self.punktListSourceScroll.grid(row=0, column=1, sticky="nse")
-        self.punktListSource.configure(yscrollcommand=self.punktListSourceScroll.set)
+        Radiobutton(lf_transType,text="Helmerttransformation", variable=self.int_radioTrans, value=0)\
+            .grid(row=0, column=0, padx=3, pady=3)
+        Radiobutton(lf_transType,text="Affintransformation", variable=self.int_radioTrans, value=1)\
+            .grid(row=0, column=1, padx=3, pady=3)
+        Button(self,text="Lade Punkte",command=self.BtnPressedLoadPoints)\
+            .grid(row=0, column=1, padx=3, pady=3, sticky="w")
+        Button(self,text="Berechnen",command=self.BtnPressedCalc)\
+            .grid(row=2, column=0, padx=3, pady=3, columnspan=1,sticky="e")
+        Button(self,text="Zeige Grafik",command=self.BtnPressedPlot)\
+            .grid(row=2, column=1, padx=3, pady=3, columnspan=1,sticky="w")
 
-        self.punktListDest = Treeview(lfDest)
-        self.punktListDest.grid(row=0, column=0, padx=3, pady=3)
-        self.punktListDest["columns"] = ("Y", "X")
-        self.punktListDest.column("#0",width = tv_column_width_id, minwidth=tv_column_width_id)
-        self.punktListDest.column("Y",width = tv_column_width, minwidth=tv_column_width_min)
-        self.punktListDest.column("X",width = tv_column_width, minwidth=tv_column_width_min)
-        self.punktListDest.heading("#0",text="id")
-        self.punktListDest.heading("Y",text="Y")
-        self.punktListDest.heading("X",text="X")
-        self.punktListDestScroll = Scrollbar(lfDest,orient="vertical", command=self.punktListDest.yview)
-        self.punktListDestScroll.grid(row=0, column=1, sticky="nse")
-        self.punktListDest.configure(yscrollcommand=self.punktListDestScroll.set)
+        self.tv_punktListSource = Treeview(lf_Source,selectmode="none")
+        self.tv_punktListSource.grid(row=0, column=0, padx=3, pady=3)
+        self.tv_punktListSource["columns"] = ("y", "x")
+        self.tv_punktListSource.column("#0",width = tv_column_width_id, minwidth=tv_column_width_id)
+        self.tv_punktListSource.column("y",width = tv_column_width, minwidth=tv_column_width_min)
+        self.tv_punktListSource.column("x",width = tv_column_width, minwidth=tv_column_width_min)
+        self.tv_punktListSource.heading("#0",text="id")
+        self.tv_punktListSource.heading("y",text="y")
+        self.tv_punktListSource.heading("x",text="x")
+        self.scr_punktListSourceScroll = Scrollbar(lf_Source,orient="vertical", command=self.tv_punktListSource.yview)
+        self.scr_punktListSourceScroll.grid(row=0, column=1, sticky="nse")
+        self.tv_punktListSource.configure(yscrollcommand=self.scr_punktListSourceScroll.set)
 
-        Label(lfParameter,text="Maßstab Y").grid(row=0, column=0, padx=3, pady=3, sticky="w")
-        Label(lfParameter,text="Maßstab X").grid(row=0, column=3, padx=3, pady=3, sticky="e")
-        Label(lfParameter,text="Rotation Y / gon").grid(row=1, column=0, padx=3, pady=3, sticky="w")
-        Label(lfParameter,text="Rotation X / gon").grid(row=1, column=3, padx=3, pady=3, sticky="e")
-        Label(lfParameter,text="Translation Y").grid(row=2, column=0, padx=3, pady=3, sticky="w")
-        Label(lfParameter,text="Translation X").grid(row=2, column=3, padx=3, pady=3, sticky="e")
+        self.tv_punktListDest = Treeview(lf_Dest)
+        self.tv_punktListDest.grid(row=0, column=0, padx=3, pady=3)
+        self.tv_punktListDest["columns"] = ("Y", "X")
+        self.tv_punktListDest.column("#0",width = tv_column_width_id, minwidth=tv_column_width_id)
+        self.tv_punktListDest.column("Y",width = tv_column_width, minwidth=tv_column_width_min)
+        self.tv_punktListDest.column("X",width = tv_column_width, minwidth=tv_column_width_min)
+        self.tv_punktListDest.heading("#0",text="id")
+        self.tv_punktListDest.heading("Y",text="Y")
+        self.tv_punktListDest.heading("X",text="X")
+        self.scr_punktListDestScroll = Scrollbar(lf_Dest,orient="vertical", command=self.tv_punktListDest.yview)
+        self.scr_punktListDestScroll.grid(row=0, column=1, sticky="nse")
+        self.tv_punktListDest.configure(yscrollcommand=self.scr_punktListDestScroll.set)
 
-        Entry(lfParameter,textvariable=self.dblParaM_Y,state="readonly").grid(row=0, column=1, padx=3, pady=3)
-        Entry(lfParameter,textvariable=self.dblParaM_X,state="readonly").grid(row=0, column=2, padx=3, pady=3)
-        Entry(lfParameter,textvariable=self.dblParaRot_Y,state="readonly").grid(row=1, column=1, padx=3, pady=3)
-        Entry(lfParameter,textvariable=self.dblParaRot_X,state="readonly").grid(row=1, column=2, padx=3, pady=3)
-        Entry(lfParameter,textvariable=self.dblParaTrans_Y,state="readonly").grid(row=2, column=1, padx=3, pady=3)
-        Entry(lfParameter,textvariable=self.dblParaTrans_X,state="readonly").grid(row=2, column=2, padx=3, pady=3)
+        Label(lf_Parameter,text="Maßstab Y").grid(row=0, column=0, padx=3, pady=3, sticky="w")
+        Label(lf_Parameter,text="Maßstab X").grid(row=0, column=3, padx=3, pady=3, sticky="e")
+        Label(lf_Parameter,text="Rotation Y / gon").grid(row=1, column=0, padx=3, pady=3, sticky="w")
+        Label(lf_Parameter,text="Rotation X / gon").grid(row=1, column=3, padx=3, pady=3, sticky="e")
+        Label(lf_Parameter,text="Translation Y").grid(row=2, column=0, padx=3, pady=3, sticky="w")
+        Label(lf_Parameter,text="Translation X").grid(row=2, column=3, padx=3, pady=3, sticky="e")
 
-        self.punktListTrans = Treeview(lfTrans,selectmode="none")
-        self.punktListTrans.grid(row=0, column=0, padx=3, pady=3)
-        self.punktListTrans["columns"] = ("Y", "X","Rk Y","Rk X")
-        self.punktListTrans.column("#0",width = tv_column_width_id, minwidth=tv_column_width_id)
-        self.punktListTrans.column("Y",width = tv_column_width, minwidth=tv_column_width_min)
-        self.punktListTrans.column("X",width = tv_column_width, minwidth=tv_column_width_min)
-        self.punktListTrans.column("Rk Y",width = tv_column_width, minwidth=tv_column_width_min)
-        self.punktListTrans.column("Rk X",width = tv_column_width, minwidth=tv_column_width_min)
-        self.punktListTrans.heading("#0",text="id")
-        self.punktListTrans.heading("Y",text="Y")
-        self.punktListTrans.heading("X",text="X")
-        self.punktListTrans.heading("Rk Y",text="Restklaffe Y")
-        self.punktListTrans.heading("Rk X",text="Restklaffe X")
-        self.punktListTransScroll = Scrollbar(lfTrans,orient="vertical", command=self.punktListTrans.yview)
-        self.punktListTransScroll.grid(row=0, column=1, sticky="nse")
-        self.punktListTrans.configure(yscrollcommand=self.punktListTransScroll.set)
+        Entry(lf_Parameter,textvariable=self.dbl_ParaMY,state="readonly").grid(row=0, column=1, padx=3, pady=3)
+        Entry(lf_Parameter,textvariable=self.dbl_ParaMX,state="readonly").grid(row=0, column=2, padx=3, pady=3)
+        Entry(lf_Parameter,textvariable=self.dbl_ParaRotY,state="readonly").grid(row=1, column=1, padx=3, pady=3)
+        Entry(lf_Parameter,textvariable=self.dbl_ParaRotX,state="readonly").grid(row=1, column=2, padx=3, pady=3)
+        Entry(lf_Parameter,textvariable=self.dbl_ParaTransY,state="readonly").grid(row=2, column=1, padx=3, pady=3)
+        Entry(lf_Parameter,textvariable=self.dbl_ParaTransX,state="readonly").grid(row=2, column=2, padx=3, pady=3)
 
-    def loadPoints(self, text, sepDec, sepVal, system):
-        if system == 0:
-            self.__dict_PLQuelle.clear()
-            self.__dict_PLQuelle.einlesenListe(text, sepDec, sepVal)
-            self.showPoints(system, self.__dict_PLQuelle)
+        self.tv_punktListTrans = Treeview(lf_Trans,selectmode="none")
+        self.tv_punktListTrans.grid(row=0, column=0, padx=3, pady=3)
+        self.tv_punktListTrans["columns"] = ("Y", "X","Rk Y","Rk X")
+        self.tv_punktListTrans.column("#0",width = tv_column_width_id, minwidth=tv_column_width_id)
+        self.tv_punktListTrans.column("Y",width = tv_column_width, minwidth=tv_column_width_min)
+        self.tv_punktListTrans.column("X",width = tv_column_width, minwidth=tv_column_width_min)
+        self.tv_punktListTrans.column("Rk Y",width = tv_column_width, minwidth=tv_column_width_min)
+        self.tv_punktListTrans.column("Rk X",width = tv_column_width, minwidth=tv_column_width_min)
+        self.tv_punktListTrans.heading("#0",text="id")
+        self.tv_punktListTrans.heading("Y",text="Y")
+        self.tv_punktListTrans.heading("X",text="X")
+        self.tv_punktListTrans.heading("Rk Y",text="Restklaffe Y")
+        self.tv_punktListTrans.heading("Rk X",text="Restklaffe X")
+        self.scr_punktListTransScroll = Scrollbar(lf_Trans,orient="vertical", command=self.tv_punktListTrans.yview)
+        self.scr_punktListTransScroll.grid(row=0, column=1, sticky="nse")
+        self.tv_punktListTrans.configure(yscrollcommand=self.scr_punktListTransScroll.set)
+
+    def loadPoints(self, text, sepDec, sepVal, systemtype):
+        if systemtype == 0:
+            self.__pd_PLQuelle.clear()
+            self.__pd_PLQuelle.einlesenListe(text, sepDec, sepVal)
+            self.showPoints(systemtype, self.__pd_PLQuelle)
         else:
-            self.__dict_PLZiel.clear()
-            self.__dict_PLZiel.einlesenListe(text, sepDec, sepVal)
-            self.showPoints(system, self.__dict_PLZiel)
+            self.__pd_PLZiel.clear()
+            self.__pd_PLZiel.einlesenListe(text, sepDec, sepVal)
+            self.showPoints(systemtype, self.__pd_PLZiel)
 
-    def showPoints(self, system, dicP):
-        if system == 0:
-            self.fillTree(self.punktListSource, dicP)
-        elif system == 1:
-            self.fillTree(self.punktListDest, dicP)
+    def showPoints(self, systemtype, dP):
+        if systemtype == 0:
+            self.fillTree(self.tv_punktListSource, dP)
+        elif systemtype == 1:
+            self.fillTree(self.tv_punktListDest, dP)
         else:
-            self.fillTree(self.punktListTrans,dicP)
+            self.fillTree(self.tv_punktListTrans,dP)
 
-    def showParam(self,parameter):
-        self.dblParaM_Y.set(parameter["m_Y"])
-        self.dblParaRot_Y.set(Winkel(parameter["rot_Y"],"rad").get_w("gon"))
-        self.dblParaTrans_Y.set(parameter["Y0"])
-        self.dblParaTrans_X.set(parameter["X0"])
+    def showParam(self, parameter):
+        self.dbl_ParaMY.set(parameter["m_Y"])
+        self.dbl_ParaRotY.set(Winkel(parameter["rot_Y"],"rad").get_w("gon"))
+        self.dbl_ParaTransY.set(parameter["Y0"])
+        self.dbl_ParaTransX.set(parameter["X0"])
         if "m_X" in parameter:
-            self.dblParaM_X.set(parameter["m_X"])
-            self.dblParaRot_X.set(Winkel(parameter["rot_X"],"rad").get_w("gon"))
+            self.dbl_ParaMX.set(parameter["m_X"])
+            self.dbl_ParaRotX.set(Winkel(parameter["rot_X"],"rad").get_w("gon"))
         else:
-            self.dblParaM_X.set(parameter["m_Y"])
-            self.dblParaRot_X.set(Winkel(parameter["rot_Y"],"rad").get_w("gon"))
+            self.dbl_ParaMX.set(parameter["m_Y"])
+            self.dbl_ParaRotX.set(Winkel(parameter["rot_Y"],"rad").get_w("gon"))
 
-    def fillTree(self, treename, dicP):
+    def fillTree(self, treename, dP):
         for row in treename.get_children():
             treename.delete(row)
-        dP = dicP.get_dic()
+        dP = dP.get_dic()
         keys = list(dP.keys())
-        if treename == self.punktListTrans:
-            for i in range(len(dP)):
-                pId = keys[i]
-                if "w" in dP[pId]:
-                    treename.insert("",i+1,text=pId, values=(dP[pId]["coord"].get_y(), dP[pId]["coord"].get_x(), \
-                        dP[pId]["w"].get_y(), dP[pId]["w"].get_x()))
-                else:
-                    treename.insert("",i+1,text=pId, values=(dP[pId]["coord"].get_y(), dP[pId]["coord"].get_x()))
-        else:
-            for i in range(len(dP)):
-                pId = keys[i]
-                treename.insert("",i+1,text=pId, values=(dP[pId]["coord"].get_y(), dP[pId]["coord"].get_x()))
+        for i in range(len(dP)):
+            pId = keys[i]
+            y =  self.runde(dP[pId]["coord"].get_y())
+            x =  self.runde(dP[pId]["coord"].get_x())
+            if "w" in dP[pId]:
+                wy = self.runde(dP[pId]["w"].get_y())
+                wx = self.runde(dP[pId]["w"].get_x())
+                treename.insert("",i+1,text=pId, values=(y, x, wy, wx))
+            else:
+                treename.insert("",i+1,text=pId, values=(y, x))
 
     def BtnPressedLoadPoints(self):
         top = Toplevel()
@@ -169,36 +174,36 @@ class FensterTrans(GuiTemplate):
 
     def BtnPressedCalc(self):
         l_p1exclude = []
-        for i in self.punktListDest.selection():
-            l_p1exclude.append(self.punktListDest.item(i,"text"))
-        if self.radioTrans.get() == 0:
-            punkte, parameter = HelmertTrans(self.__dict_PLQuelle, self.__dict_PLZiel, l_p1exclude).get_result()
+        for i in self.tv_punktListDest.selection():
+            l_p1exclude.append(self.tv_punktListDest.item(i,"text"))
+        if self.int_radioTrans.get() == 0:
+            self.__pd_PLTrans, self.__dict_para = HelmertTrans(self.__pd_PLQuelle, self.__pd_PLZiel, l_p1exclude).get_result()
         else:
-            punkte, parameter = AffinTrans(self.__dict_PLQuelle, self.__dict_PLZiel, l_p1exclude).get_result()
-        self.showPoints(2, punkte)
-        self.__dict_PLTrans = punkte
-        self.showParam(parameter)
+            self.__pd_PLTrans, self.__dict_para = AffinTrans(self.__pd_PLQuelle, self.__pd_PLZiel, l_p1exclude).get_result()
+        self.showPoints(2, self.__pd_PLTrans)
+        self.showParam(self.__dict_para)
 
     def load_json(self,s):
         pDic = json.loads(s)
         for k,v in pDic.items():
-            j = json.loads(v)
             if k == "source":
-                self.__dict_PLQuelle.from_json(j)
+                self.__pd_PLQuelle.from_json(v)
             elif k == "dest":
-                self.__dict_PLZiel.from_json(j)
+                self.__pd_PLZiel.from_json(v)
             elif k == "trans":
-                self.__dict_PLTrans.from_json(j)
+                self.__pd_PLTrans.from_json(v)
+            elif k == "parameter":
+                self.__dict_para = v
         
-        self.showPoints(0, self.__dict_PLQuelle)
-        self.showPoints(1, self.__dict_PLZiel)
-        self.showPoints(2, self.__dict_PLTrans)
+        self.showPoints(0, self.__pd_PLQuelle)
+        self.showPoints(1, self.__pd_PLZiel)
+        self.showPoints(2, self.__pd_PLTrans)
+        self.showParam(self.__dict_para)
 
     def save_json(self):
-        pDicSource_j = json.dumps((self.__dict_PLQuelle.get_json()), default=lambda objekt: objekt.get_json(),sort_keys=True, indent=4)
-        pDicDest_j = json.dumps((self.__dict_PLZiel.get_json()), default=lambda objekt: objekt.get_json(),sort_keys=True, indent=4)
-        pDicTrans_j = json.dumps((self.__dict_PLTrans.get_json()), default=lambda objekt: objekt.get_json(),sort_keys=True, indent=4)
-        return json.dumps({"source":pDicSource_j, "dest":pDicDest_j, "trans":pDicTrans_j})
+        return json.dumps({"source":self.__pd_PLQuelle.get_json(), "dest":self.__pd_PLZiel.get_json(),
+                          "trans":self.__pd_PLTrans.get_json(), "parameter":self.__dict_para}, default=lambda obj: obj.get_json(),
+                          sort_keys=True, indent=4)
 
     def BtnPressedPlot(self):
         fig = plt.figure()
@@ -206,7 +211,7 @@ class FensterTrans(GuiTemplate):
         ax.set_aspect("equal")
 
         pl_plot = []
-        for k in self.__dict_PLTrans.get_dic().values():
+        for k in self.__pd_PLTrans.get_dic().values():
             pl_plot.append(k)
         
         l_y = []
@@ -222,16 +227,12 @@ class FensterTrans(GuiTemplate):
 
         plt.plot(l_y,l_x, '.', color='black')
 
-
-        #ax.relim()
+        ax.relim()
         ax.autoscale_view()
         ax.set_xlabel("Y")
         ax.set_ylabel("X")
         ax.grid(True)
         plt.show()
-
-
-
 
 
 if __name__ == "__main__":
