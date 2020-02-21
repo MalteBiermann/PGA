@@ -15,8 +15,8 @@ class GuiTemplate(Frame):
 
     def createmenu(self):
         menubar = Menu(self)
-        filemenu = Menu(menubar, tearoff=0)
         
+        filemenu = Menu(menubar, tearoff=0)
         classlist = ("FensterTrans", "FensterPZ")
         if self.get_class_name(self) in classlist:
             filemenu.add_command(label="Load JSON", command=self.open_loadJson)
@@ -25,6 +25,10 @@ class GuiTemplate(Frame):
             filemenu.add_command(label="Load JSON", command=self.open_loadJson, state="disabled")
             filemenu.add_command(label="Save JSON", command=self.open_saveJson, state="disabled")
         menubar.add_cascade(label="File", menu=filemenu)
+
+        #roundmenu = Menu(menubar, tearoff=0)
+        #roundmenu.add_command(label="Runden")
+        menubar.add_cascade(label="Runden", command=self.open_roundWindow)
 
         aboutmenu = Menu(menubar, tearoff=0)
         aboutmenu.add_command(label="Help", command=self.open_help)
@@ -56,7 +60,7 @@ class GuiTemplate(Frame):
         return ""
 
     def open_help(self):
-        filepath = ""
+        filepath = "manual.pdf"
         if sys.platform == 'darwin':
             open(filepath)
         else:
@@ -65,6 +69,9 @@ class GuiTemplate(Frame):
     def open_msgAbout(self):
         authors = "Svenja Rode,\nChris Arends,\nHendrik Gebben,\nMalte Biermann\n\n https://github.com/MalteBiermann/PGA"
         messagebox.showinfo("Autoren",authors)
+
+    def open_roundWindow(self):
+        print("test")
 
 
 if __name__ == "__main__":
