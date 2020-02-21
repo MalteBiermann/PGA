@@ -7,12 +7,16 @@ if __name__ == "__main__":
     import sys
     sys.path.append(".")
 
+from gui.round import FensterRound
+
 class GuiTemplate(Frame):
-    def __init__(self, master=None):
-        super().__init__(master=master)
+    def __init__(self, master):
+        super().__init__(master)
         self.createmenu()
         self.master = master
 
+        self.int_round = 3
+        self.bool_roundActive = False
 
     def createmenu(self):
         menubar = Menu(self)
@@ -27,8 +31,6 @@ class GuiTemplate(Frame):
             filemenu.add_command(label="Save JSON", command=self.open_saveJson, state="disabled")
         menubar.add_cascade(label="File", menu=filemenu)
 
-        #roundmenu = Menu(menubar, tearoff=0)
-        #roundmenu.add_command(label="Runden")
         menubar.add_cascade(label="Runden", command=self.open_roundWindow)
 
         aboutmenu = Menu(menubar, tearoff=0)
@@ -72,7 +74,15 @@ class GuiTemplate(Frame):
         messagebox.showinfo("Autoren",authors)
 
     def open_roundWindow(self):
-        print("test")
+        top = Toplevel()
+        top.title("Runden")
+        self.F_round = FensterRound(top, self)
+    
+    def runde(self, f):
+        if self.bool_roundActive:
+            return round(f, self.int_round)
+        else:
+            return f
 
 
 if __name__ == "__main__":
