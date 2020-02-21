@@ -14,24 +14,24 @@ class FensterHA(GuiTemplate):
         super().__init__(master)
         self.grid()
 
-        self.eingabeX1 = StringVar()
-        self.eingabeY1 = StringVar()
-        self.eingabeX2 = StringVar()
-        self.eingabeY2 = StringVar()
-        self.eingabeS = StringVar()
-        self.eingabeT = StringVar()
+        self.str_x1 = StringVar()
+        self.str_y1 = StringVar()
+        self.str_x2 = StringVar()
+        self.str_y2 = StringVar()
+        self.str_s = StringVar()
+        self.str_t = StringVar()
 
-        Entry(self, textvariable=self.eingabeY1).grid(
+        Entry(self, textvariable=self.str_y1).grid(
             row=1, column=1, padx=3, pady=3)
-        Entry(self, textvariable=self.eingabeX1).grid(
+        Entry(self, textvariable=self.str_x1).grid(
             row=2, column=1, padx=3, pady=3)
-        Entry(self, textvariable=self.eingabeY2).grid(
+        Entry(self, textvariable=self.str_y2).grid(
             row=1, column=4, padx=3, pady=3)
-        Entry(self, textvariable=self.eingabeX2).grid(
+        Entry(self, textvariable=self.str_x2).grid(
             row=2, column=4, padx=3, pady=3)
-        Entry(self, textvariable=self.eingabeS).grid(
+        Entry(self, textvariable=self.str_s).grid(
             row=1, column=2, padx=3, pady=3)
-        Entry(self, textvariable=self.eingabeT).grid(
+        Entry(self, textvariable=self.str_t).grid(
             row=1, column=3, padx=3, pady=3)
 
         Label(self, text="Y").grid(row=1, column=0)
@@ -47,24 +47,24 @@ class FensterHA(GuiTemplate):
             row=3, column=3, padx=3, pady=3, columnspan=3)
 
     def btnBerechneErsteHAPressed(self):
-        Y1 = float(self.eingabeY1.get().replace(",", "."))
-        X1 = float(self.eingabeX1.get().replace(",", "."))
-        t = Winkel(float(self.eingabeT.get().replace(",", ".")), "gon")
-        s = Strecke.init_länge(float(self.eingabeS.get().replace(",", ".")))
+        Y1 = float(self.str_y1.get().replace(",", "."))
+        X1 = float(self.str_x1.get().replace(",", "."))
+        t = Winkel(float(self.str_t.get().replace(",", ".")), "gon")
+        s = Strecke.init_länge(float(self.str_s.get().replace(",", ".")))
         P2 = Punkt.ersteHA(Punkt(X1, Y1), s, t)
-        self.eingabeX2.set(self.runde(P2.get_x()))
-        self.eingabeY2.set(self.runde(P2.get_y()))
+        self.str_x2.set(self.runde(P2.get_x()))
+        self.str_y2.set(self.runde(P2.get_y()))
 
     def btnBerechneZweiteHAPressed(self):
-        Y1 = float(self.eingabeY1.get().replace(",", "."))
-        X1 = float(self.eingabeX1.get().replace(",", "."))
-        Y2 = float(self.eingabeY2.get().replace(",", "."))
-        X2 = float(self.eingabeX2.get().replace(",", "."))
+        Y1 = float(self.str_y1.get().replace(",", "."))
+        X1 = float(self.str_x1.get().replace(",", "."))
+        Y2 = float(self.str_y2.get().replace(",", "."))
+        X2 = float(self.str_x2.get().replace(",", "."))
         s = Strecke.init_koor(Y1, X1, Y2, X2)
         s, t = s.zweiteHA()
         t = t.get_w("gon")
-        self.eingabeS.set(self.runde(s))
-        self.eingabeT.set(self.runde(t))
+        self.str_s.set(self.runde(s))
+        self.str_t.set(self.runde(t))
 
 
 if __name__ == "__main__":

@@ -71,10 +71,10 @@ class FensterBS(GuiTemplate):
         k1 = Kreis(p1, S1)
         k2 = Kreis(p2, S2)
         p3, p4 = Bogenschnitt(k1, k2).berechne()
-        self.ausgabeY1.set(str(p3.get_y()))
-        self.ausgabeX1.set(str(p3.get_x()))
-        self.ausgabeY2.set(str(p4.get_y()))
-        self.ausgabeX2.set(str(p4.get_x()))
+        self.ausgabeY1.set(self.runde(p3.get_y()))
+        self.ausgabeX1.set(self.runde(p3.get_x()))
+        self.ausgabeY2.set(self.runde(p4.get_y()))
+        self.ausgabeX2.set(self.runde(p4.get_x()))
 
 
 if __name__ == "__main__":
