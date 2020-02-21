@@ -37,18 +37,18 @@ class FensterWinkelrechner(GuiTemplate):
 
     def btnPressedBerechneGrad(self):
         w = Winkel(float(self.strEntryGrad.get().replace(",", ".")),einheit="grad")
-        self.strEntryRad.set(w.get_w(einheit="rad"))
-        self.strEntryGon.set(w.get_w(einheit="gon"))
+        self.strEntryRad.set(self.runde(w.get_w(einheit="rad")))
+        self.strEntryGon.set(self.runde(w.get_w(einheit="gon")))
 
     def btnPressedBerechneRad(self):
         w = Winkel(float(self.strEntryRad.get().replace(",", ".")),einheit="rad")
-        self.strEntryGon.set(w.get_w(einheit="gon"))
-        self.strEntryGrad.set(w.get_w(einheit="grad"))
+        self.strEntryGon.set(self.runde(w.get_w(einheit="gon")))
+        self.strEntryGrad.set(self.runde(w.get_w(einheit="grad")))
 
     def btnPressedBerechneGon(self):
         w = Winkel(float(self.strEntryGon.get().replace(",", ".")),einheit="gon")
-        self.strEntryRad.set(w.get_w(einheit="rad"))
-        self.strEntryGrad.set(w.get_w(einheit="grad"))
+        self.strEntryRad.set(self.runde(w.get_w(einheit="rad")))
+        self.strEntryGrad.set(self.runde(w.get_w(einheit="grad")))
 
     def save_json(self):
         str_wRad =  Winkel(float(self.strEntryRad.get().replace(",", ".")),einheit="rad").get_json()
