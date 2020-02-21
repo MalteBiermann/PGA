@@ -1,6 +1,7 @@
 from tkinter import Frame, Tk, Button, Toplevel, Menu, messagebox, filedialog, Label
 from os import startfile
 import webbrowser
+import sys
 
 if __name__ == "__main__":
     import sys
