@@ -140,16 +140,16 @@ class FensterTrans(GuiTemplate):
             self.fillTree(self.tv_punktListTrans,dP)
 
     def showParam(self, parameter):
-        self.dbl_ParaMY.set(parameter["m_Y"])
-        self.dbl_ParaRotY.set(Winkel(parameter["rot_Y"],"rad").get_w("gon"))
-        self.dbl_ParaTransY.set(parameter["Y0"])
-        self.dbl_ParaTransX.set(parameter["X0"])
+        self.dbl_ParaMY.set(self.runde(parameter["m_Y"]))
+        self.dbl_ParaRotY.set(self.runde(Winkel(parameter["rot_Y"],"rad").get_w("gon")))
+        self.dbl_ParaTransY.set(self.runde(parameter["Y0"]))
+        self.dbl_ParaTransX.set(self.runde(parameter["X0"]))
         if "m_X" in parameter:
-            self.dbl_ParaMX.set(parameter["m_X"])
-            self.dbl_ParaRotX.set(Winkel(parameter["rot_X"],"rad").get_w("gon"))
+            self.dbl_ParaMX.set(self.runde(parameter["m_X"]))
+            self.dbl_ParaRotX.set(self.runde(Winkel(parameter["rot_X"],"rad").get_w("gon")))
         else:
-            self.dbl_ParaMX.set(parameter["m_Y"])
-            self.dbl_ParaRotX.set(Winkel(parameter["rot_Y"],"rad").get_w("gon"))
+            self.dbl_ParaMX.set(self.runde(parameter["m_Y"]))
+            self.dbl_ParaRotX.set(self.runde(Winkel(parameter["rot_Y"],"rad").get_w("gon")))
 
     def fillTree(self, treename, dP):
         for row in treename.get_children():
