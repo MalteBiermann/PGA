@@ -113,25 +113,41 @@ class Punkt_Dic:
         for v in d.values():
             for k1, v1 in v.items():
                 pd.update({k1:{}})
-                for k2, v2 in v1.items():
+                for k2, v2 in v1.items():   #Transformationen
                     if k2 == "coord":
                         c = {"coord": Punkt.init_json(v2)}
                         pd[k1].update(c)
                     elif k2 == "w":
                         pd[k1].update({"w":Punkt.init_json(v2)})
-                        # for k3, v3 in v2.items():
-                        #     if k3 == "y":
-                        #         c = {"y": Strecke.init_jsonKoor(v3)}
-                        #     elif k3 == "x":
-                        #         c = {"x": Strecke.init_jsonKoor(v3)}
-                        #     pd[k1]["w"].update(c)
                     elif k2 == "beta":
                         pd[k1].update({"beta":Winkel.init_json(v2)})
                     elif k2 == "r":
                         pd[k1].update({"r":Winkel.init_json(v2)})
                     elif k2 == "s_vor":
                         pd[k1].update({"s_vor":Strecke.init_jsonKoor(v2)})
+        self.set_dic(pd)
 
+    def from_jsonPoly(self, d):
+        from datentyp.strecke import Strecke
+        pd = {}
+        for k,v in d.items():
+            pd.update({k:{}})
+            for k1, v1 in v.items():
+                if k1 == "coord":
+                    c = {"coord": Punkt.init_json(v1)}
+                    pd[k].update(c)
+                elif k1 == "w":
+                    pd[k].update({"w":Punkt.init_json(v1)})
+                elif k1 == "beta":
+                    pd[k].update({"beta":Winkel.init_json(v1)})
+                elif k1 == "t_n":
+                    pd[k].update({"t_n":Winkel.init_json(v1)})
+                elif k1 == "t_0":
+                    pd[k].update({"t_0":Winkel.init_json(v1)})
+                elif k1 == "r":
+                    pd[k].update({"r":Winkel.init_json(v1)})
+                elif k1 == "s_vor":
+                    pd[k].update({"s_vor":Strecke.init_jsonKoor(v1)})
         self.set_dic(pd)
 
 
@@ -155,7 +171,7 @@ if __name__ == "__main__":
     pDic.addPoint(p1)
     pDic.addPoint(Punkt(10,10,"test2"))
     pDic.setAttribute("Test",{"w":Punkt(0.1,0.1,"w")})
-    j_pd = json.dumps(pDic, default=lambda objekt: objekt.get_json(),sort_keys=True, indent=4)
+    j_pd = json.dumps(pDic, default=lambda obj: obj.get_json(),sort_keys=True, indent=4)
     print(j_pd)
 
     pd_j = Punkt_Dic()

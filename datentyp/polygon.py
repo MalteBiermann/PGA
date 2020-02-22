@@ -11,9 +11,6 @@ class Polygon:
     def __init__(self):
         self.__pIdList = []
         self.__PDic = Punkt_Dic()
-    
-    def get_pIdList(self):
-        return self.__pIdList
         
     def add_Ppointwithcoords(self,p,attribute=None):
         self.__PDic.addPoint(p)
@@ -48,6 +45,9 @@ class Polygon:
     
     def get_pDic(self):
         return self.__PDic.get_dic()
+    
+    def get_pIdList(self):
+        return self.__pIdList
 
     def get_json(self):
         pDic_j = json.dumps(self.__PDic.get_json(), default=lambda objekt: objekt.get_json(), sort_keys=True, indent=4)
@@ -56,15 +56,12 @@ class Polygon:
 
     def set_json(self,s):
         p_j = json.loads(s)
-        pIdL = p_j["pIdL"]
-        pDic = p_j["pDic"]
-        self.__PDic.from_json(json.loads(pDic))
-        self.__pIdList = json.loads(pIdL)
+        self.__PDic.from_jsonPoly(p_j["pDic"])
+        self.__pIdList = p_j["pIdL"]
 
     def clean(self):
         self.__pIdList.clear()
         self.__PDic.clear()
-
 
 
 if __name__ == "__main__":

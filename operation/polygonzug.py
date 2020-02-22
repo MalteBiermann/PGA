@@ -154,9 +154,13 @@ class Polygonzug():  # Traverse
         return self.__parameter
 
     def get_json(self):
-        return json.dumps(self.__polygon.get_json(), sort_keys=True, indent=4)
+        d = {"pDic":self.__polygon.get_pDic(), "pIdL":self.__polygon.get_pIdList(), "parameter":self.__parameter}
+        return json.dumps(d, default=lambda obj: obj.get_json(), sort_keys=True, indent=4)
 
     def set_polygon_json(self,s):
+        dic_j = json.loads(s)["parameter"]
+        self.__parameter = {"w_beta":Winkel.init_json(dic_j["w_beta"]), "w_y":dic_j["w_y"], "w_x":dic_j["w_x"]}
+
         self.__polygon.set_json(s)
 
     def clean(self):
@@ -194,3 +198,4 @@ if __name__ == "__main__":
                     print(k, rp_res.get_PpointbyNr(i)[k].get_w("gon"), end="   ")
                 else: print(k, rp_res.get_PpointbyNr(i)[k], end="   ")
         print("\r")
+    print(pz.get_json())
