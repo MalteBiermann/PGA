@@ -55,7 +55,7 @@ class GuiTemplate(Frame):
     def open_saveJson(self):
         j_s = self.save_json()
         filepath = filedialog.asksaveasfilename(filetypes=[("JSON","*.json")], defaultextension=[("JSON","*.json")])
-        if filepath is not None:
+        if filepath != "":
             with open(filepath,'w') as fh:
                 fh.writelines(j_s)
     
