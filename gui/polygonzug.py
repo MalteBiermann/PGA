@@ -1,4 +1,4 @@
-from tkinter import Frame, Tk, Button, Toplevel, Radiobutton, IntVar, StringVar, DoubleVar, LabelFrame, Entry, Label, Scrollbar, filedialog
+from tkinter import Frame,Tk,Button,Toplevel,Radiobutton,IntVar,StringVar,DoubleVar,LabelFrame,Entry,Label,Scrollbar,filedialog
 from tkinter.ttk import Treeview
 import json
 
@@ -16,10 +16,12 @@ class FensterPZ(GuiTemplate):
         super().__init__(master)
         self.grid()
 
-        self.__polygonzug = Polygonzug()
         tv_column_width_id = 40
         tv_column_width = 120
         tv_column_width_min = 100
+
+        self.__polygonzug = Polygonzug()
+
         self.radioPolygonType = IntVar(value=0)
 
         self.str_sepDec = StringVar(value=".")
@@ -40,7 +42,7 @@ class FensterPZ(GuiTemplate):
         Radiobutton(lf_PolygonType, text="Polygonzug beidseitig in Richtung und Lage angeschlossen",
                     variable=self.radioPolygonType, value=0).grid(row=0, column=0, padx=3, pady=3, sticky="w")
         Radiobutton(lf_PolygonType, text="Ringpolygon", variable=self.radioPolygonType, value=1).grid(
-            row=1, column=0, padx=3, pady=3, sticky="w")
+                    row=1, column=0, padx=3, pady=3, sticky="w")
 
         lf_OpenFile = LabelFrame(self, text=".CSV laden")
         lf_OpenFile.grid(row=0, column=1, padx=3, pady=3)
@@ -84,10 +86,10 @@ class FensterPZ(GuiTemplate):
         self.tv_points.heading("s", text="s")
         self.tv_points.heading("y", text="y")
         self.tv_points.heading("x", text="x")
-        self.punktListScroll = Scrollbar(
+        self.scr_punktListScroll = Scrollbar(
             lf_TVPoints, orient="vertical", command=self.tv_points.yview)
-        self.punktListScroll.grid(row=0, column=1, sticky="nse")
-        self.tv_points.configure(yscrollcommand=self.punktListScroll.set)
+        self.scr_punktListScroll.grid(row=0, column=1, sticky="nse")
+        self.tv_points.configure(yscrollcommand=self.scr_punktListScroll.set)
 
         lf_Parameter = LabelFrame(self, text="Parameter")
         lf_Parameter.grid(row=2, column=1, padx=3,
@@ -133,26 +135,26 @@ class FensterPZ(GuiTemplate):
             pId = l_Polygon[i]
             keys = dic_Polygon[pId].keys()
             if "beta" in keys:
-                beta = dic_Polygon[pId]["beta"].get_w("gon")
+                beta = self.runde(dic_Polygon[pId]["beta"].get_w("gon"))
             else:
                 beta = ""
             if "r" in keys:
-                t = dic_Polygon[pId]["r"].get_w("gon")
+                t = self.runde(dic_Polygon[pId]["r"].get_w("gon"))
             else:
                 t = ""
             if "s_vor" in keys:
-                s = dic_Polygon[pId]["s_vor"].länge()
+                s = self.runde(dic_Polygon[pId]["s_vor"].länge())
             else:
                 s = ""
-            y = dic_Polygon[pId]["coord"].get_y()
-            x = dic_Polygon[pId]["coord"].get_x()
+            y = self.runde(dic_Polygon[pId]["coord"].get_y())
+            x = self.runde(dic_Polygon[pId]["coord"].get_x())
             self.tv_points.insert("", i+1, text=pId, values=(beta, t, s, y, x))
         
     def showParameter(self):    
-        self.dbl_Wbeta.set(self.__polygonzug.get_parameter()
-                           ["w_beta"].get_w("gon"))
-        self.dbl_Wx.set(self.__polygonzug.get_parameter()["w_x"])
-        self.dbl_Wy.set(self.__polygonzug.get_parameter()["w_y"])
+        self.dbl_Wbeta.set(self.runde(self.__polygonzug.get_parameter()
+                           ["w_beta"].get_w("gon")))
+        self.dbl_Wx.set(self.runde(self.__polygonzug.get_parameter()["w_x"]))
+        self.dbl_Wy.set(self.runde(self.__polygonzug.get_parameter()["w_y"]))
 
     def clearParameter(self):
         for e in (self.dbl_Wbeta, self.dbl_Wx, self.dbl_Wy):
@@ -165,8 +167,9 @@ class FensterPZ(GuiTemplate):
         self.__polygonzug.clean()
         self.clearParameter()
         self.__polygonzug.set_polygon_json(s)
-
+        self.showParameter()
         self.showPoints()
+
 
 if __name__ == "__main__":
     root = Tk()
