@@ -70,7 +70,7 @@ class GuiTemplate(Frame):
             startfile(filepath)
 
     def open_msgAbout(self):
-        authors = "Svenja Rode,\nChris Arends,\nHendrik Gebben,\nMalte Biermann\n\n https://github.com/MalteBiermann/PGA"
+        authors = "Malte Biermann\n\n https://github.com/MalteBiermann/PGA"
         messagebox.showinfo("Autoren",authors)
 
     def open_roundWindow(self):

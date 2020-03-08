@@ -36,7 +36,7 @@ class HauptFenster(Frame):
         Separator(self,orient="horizontal").grid(
             row=6, column=0, padx=3, pady=3, columnspan=3, sticky="we")
         
-        Label(self, text="Svenja Rode, Chris Arends, Hendrik Gebben und Malte Biermann").grid(
+        Label(self, text="...").grid(
             row=7, column=0, padx=3, pady=3, columnspan=3, sticky="")
 
     def openFensterWinkelrechner(self):
